@@ -1,0 +1,57 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<div class="foot-body">
+  <!-- <div class="bads"><img src="images/bottom.jpg"></div>   隐藏foot 图片 @wuwp 20170519    -->
+<!-- 友情链接 @wuwp 20170519
+  <div class="footer-friends" id="footerFriends" data-first="false">
+      <div class="main-width this-width">
+          <span>友情链接<i class="point"></i></span>
+          <a href="javascript:void(0);" class="more">&gt;</a>
+          <div class="f-links">
+              <div class="flcon">
+                <p>
+                <a href="http://www.cpic.com.cn/" target="_blank" rel="nofollow">中国太平洋保险</a>
+                <a href="http://shop.tk.cn/" target="_blank" rel="nofollow">泰康在线财产保险</a>
+                </p>
+              </div>
+          </div>
+      </div>
+   </div>
+-->
+  <div class="clear10"></div>
+  <!--底部导航 start-->
+ <!--{if $helps}-->
+    <div class="foot-help">
+      <!-- {foreach from=$helps item=help_cat name=foo} -->
+        {if $smarty.foreach.foo.iteration < 5}
+        <dl>
+          <dt class="xs-{$smarty.foreach.foo.iteration}">{$help_cat.cat_name}</dt>
+            <!-- {foreach from=$help_cat.article item=item} -->
+          <dd><a href="{$item.url}" target="_blank" title="{$item.title|escape:html}">{$item.short_title}</a></dd>
+          <!-- {/foreach} --> 
+        </dl>
+        {/if} 
+        <!-- {/foreach} --> 
+        <div class="foot-weixin">
+
+        </div>
+    </div>
+ <!--{/if}-->
+    
+   
+  <!--底部导航 end-->
+  <div class="blank"></div>
+  <!--版权 start-->
+<div class="footer_info"> {$copyright}
+      <!-- {$shop_address} {$shop_postcode}<br />  修改版权样式 @wuwp 20170519  -->
+      {$shop_address}<span>|</span>
+      powered by 91bao.cc <a style="color:#666" href="http://www.miitbeian.gov.cn" target="_blank">沪ICP备16021060号-2<a> <br />
+
+
+
+    </div>
+  <!--<div class="clear10"></div>-->
+</div>
+ 
+
+ 
+

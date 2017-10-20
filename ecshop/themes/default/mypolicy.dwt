@@ -1,0 +1,183 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="Keywords" content="{$keywords}" />
+    <meta name="Description" content="{$description}" />
+    <!-- TemplateBeginEditable name="doctitle" -->
+    <title>{$page_title}</title>
+    <!-- TemplateEndEditable --><!-- TemplateBeginEditable name="head" --><!-- TemplateEndEditable -->
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link rel="icon" href="animated_favicon.gif" type="image/gif" />
+    <link href="{$ecs_css_path}" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="/html/css/page-common.css">
+    <link rel="stylesheet" type="text/css" href="/html/css/mypolicy.css">
+    <style>
+        .mypolicy-con .list-order .mypolicy-title{
+            margin-top: -380px;
+        }
+    </style>
+    {* 包含脚本文件 *}
+    {insert_scripts files='common.js'}
+    <script type="text/javascript">
+        function $id(element) {
+            return document.getElementById(element);
+        }
+        //切屏--是按钮，_v是内容平台，_h是内容库
+        function reg(str){
+            var bt=$id(str+"_b").getElementsByTagName("h2");
+            for(var i=0;i<bt.length;i++){
+                bt[i].subj=str;
+                bt[i].pai=i;
+                bt[i].style.cursor="pointer";
+                bt[i].onclick=function(){
+                    $id(this.subj+"_v").innerHTML=$id(this.subj+"_h").getElementsByTagName("blockquote")[this.pai].innerHTML;
+                    for(var j=0;j<$id(this.subj+"_b").getElementsByTagName("h2").length;j++){
+                        var _bt=$id(this.subj+"_b").getElementsByTagName("h2")[j];
+                        var ison=j==this.pai;
+                        _bt.className=(ison?"":"h2bg");
+                    }
+                }
+            }
+            $id(str+"_h").className="none";
+            $id(str+"_v").innerHTML=$id(str+"_h").getElementsByTagName("blockquote")[0].innerHTML;
+        }
+
+    </script>
+    <script src="/js/jquery-3.1.1.js"></script>
+</head>
+<!-- #BeginLibraryItem "/library/page_header.lbi" --><!-- #EndLibraryItem -->
+
+
+<div class="container" >
+
+    <div class="main-width clearfix mycenter-box">
+        <div class="list-left" id="list-left">
+            <ul>
+                <li class="head">
+                    <img src="/html/imgs/side-head.png">
+                    <!--<a href="#" class="tit">我的积分</a>
+                    <a href="#" class="integralAllNum count"><em>0</em></a>-->
+                </li>
+                <li>
+                    <h3 class="order list-til">我的订单</h3>
+                    <div>
+                        <ul>
+
+                            <li class="active" tab="mypolicy"><a href="#">我的订单</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li>
+                    <h3 class="per list-til">个人信息</h3>
+                    <div>
+                        <ul>
+
+                            <li tab="family"><a href="#">个人信息</a></li>
+                            <li tab="safety"><a href="#">常用联系人</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li>
+                    <h3 class="wallet list-til">我的钱包</h3>
+                    <div>
+                        <ul>
+                            <li tab="coupon"><a href="#">我的代金券</a></li>
+                        </ul>
+                    </div>
+                </li>
+
+            </ul>
+        </div>
+        <!-- 我的订单 -->
+        <div class="mycenter-right">
+
+            <!-- tab title -->
+            <!--  隐藏 Tab
+            <div class="mypolicy-tab" id="mypolicyTab">
+                <ul class="tab-box">
+                    <li lab="protection" ><a href="javascript:void(0)">保障中</a></li><!-- $data.bzzcount -->
+                    <li lab="waitpay" ><a href="javascript:void(0)">未完成订单</a></li>
+                    <li lab="continue" ><a href="javascript:void(0)">待续保</a></li>
+                    <li lab="allorder" class="active"><a href="javascript:void(0)">全部</a></li><!-- $data.allcount -->
+                </ul>
+            </div>
+            -->
+            <div class="loading" id="firstLoad"></div>
+
+            <!-- main -->
+
+            <!-- 全部  这部分是可 用于替换部分  --->
+            <div class="mypolicy-con allorder" name="allorder" page="1" data-load="true" data-first="true" style="display: block;">
+                <div class="tBox loading" style="display: none;"></div>
+                <div class="tBox no-order listNull" style="display: none;">
+                    <span>居然是空的！<a href="#" target="_blank">去看看有哪些优惠</a></span>
+                </div>
+                <div class="tBox err-order listNull" style="display: none;"></div>
+
+                <div class="tBox list-order" style="display: block;">
+                    <!-- title -->
+                    <ul class="mypolicy-title clearfix">
+                        <li class="mproduct">保险产品</li>
+                        <li class="mname">被保险人</li>
+                        <li class="mprice">实付款（元）</li>
+                        <li class="mstutas">保单状态</li>
+                        <li class="mopreat">操作</li>
+                    </ul>
+
+                    <!--    扣除这个list 中需要的控件 并给控件赋值   -->
+                    <div class="mypolicy-lists">
+                        <!--  List 内容采用js 拼接生成  -->
+                    </div>
+
+                    <div class="pagination-page" id="allorderPage">
+                        <!--  Footer 内容采用js 动态生成  -->
+                    </div>
+                </div>
+            </div>
+            <p style="text-align: center;padding: 20px 0;">找不到保单？若您曾用微信购买，请关注“91保”公众号，并绑定相应账号，即可查看全部保单</p>
+
+        </div>
+    </div>
+
+
+    <!-- 删除提示-->
+    <div id="deleteOrder" class="dialog-box delete-order">
+        <div class="t"><span class="title">确认删除</span><b title="关闭" class="close">x</b></div>
+        <div class="c">
+            删除后您的订单将无法恢复!
+            <div>
+                <a id="button_left" class="tijiao" href="javascript:void(0)" data-id="">删除</a>
+                <a id="button_right" class="tijiao" href="javascript:void(0)">取消</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 其他提示 --->
+    <div id="elseNotice" class="dialog-box delete-order">
+        <div class="t"><span class="title">提示</span><b title="关闭" class="close">x</b></div>
+        <div class="c">
+            <p></p>
+            <a class="tijiao close" href="javascript:void(0)">确定</a>
+        </div>
+    </div>
+
+
+    <!-- 评论弹出框 -->
+    <div id="policyinfo-tips" class="dialog-tips"><p></p></div>
+    <div id="policyinfo-dialog" class="dialog-box">
+        <div class="t">
+            <span class="title"></span>
+            <b title="关闭" onclick="commonInfo.closeFn();">x</b>
+        </div>
+        <div class="c"></div>
+    </div>
+
+</div>
+
+
+<!-- #BeginLibraryItem "/library/page_footer.lbi" --><!-- #EndLibraryItem -->
+
+<script src="/html/js/mypolicy.js"></script>
+</body>
+</html>

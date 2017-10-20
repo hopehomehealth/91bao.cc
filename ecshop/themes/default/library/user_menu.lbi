@@ -1,0 +1,55 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!--
+<div class="greet"><a href="user.php" {if $action eq 'default'}class="curs"{/if}>
+<img src="../images/side-head.png">
+用户中心</a>
+</div>
+-->
+<div class="userMenu" id="mymenus">
+<ul>
+<li >
+<a href="user.php" {if $action eq 'default'}class="curs"{/if}>用户中心</a>
+</li>
+</ul>
+
+<ul>
+<li class="order"><a href="#">我的订单</a></li>
+<ul class="hide">
+<li><a href="user.php?act=order_list"{if $action eq 'order_list'|| $action eq 'order_detail'}class="curs"{/if}><img src="">普通订单</a></li><!--{$lang.label_order_backup}-->
+<li><a href="user.php?act=car_order_list"{if $action eq 'car_order_list'|| $action eq 'car_order_detail'}class="curs"{/if}><img src="">车险订单</a></li>
+</ul>
+</ul>
+<ul>
+<li class="per"><a href="#">个人信息</a></li>
+<ul class="hide">
+<li><a href="user.php?act=profile"{if $action eq 'profile'}class="curs"{/if}><img src=""> {$lang.label_profile}</a></li>
+<li><a href="user.php?act=address_list"{if $action eq 'address_list'}class="curs"{/if}><img src="">常用联系人</a></li>
+</ul>
+</ul>
+<ul>
+<li class="wallet"><a href="#">我的钱包</a></li>
+<ul class="hide">
+<!--<li><a href="user.php?act=bonus"{if $action eq 'bonus'}class="curs"{/if}><img src="">我的红包</a></li>--> <!-- {$lang.label_bonus_backup} -->
+<li><a href="user.php?act=tag_list"{if $action eq 'tag_list'}class="curs"{/if}><img src="">我的代金券</a></li>  <!--  {$lang.label_tag_back}  -->
+<!--  余额充值 0722  -->
+<li><a href="user.php?act=balance_recharge"{if $action eq 'balance_recharge'}class="curs"{/if}><img src="">余额充值</a></li>
+</ul>
+</ul>
+
+<!--<a href="user.php?act=collection_list"{if $action eq 'collection_list'}class="curs"{/if}><img src="../images/u5.gif"> {$lang.label_collection}</a>-->
+<!--<a href="user.php?act=message_list"{if $action eq 'message_list'}class="curs"{/if}><img src="../images/u6.gif"> {$lang.label_message}</a>-->
+
+<!--<a href="user.php?act=booking_list"{if $action eq 'booking_list'}class="curs"{/if}><img src="../images/u8.gif"> {$lang.label_booking}</a>-->
+
+<!-- {if $affiliate.on eq 1} -->
+<!--<a href="user.php?act=affiliate"{if $action eq 'affiliate'}class="curs"{/if}><img src="../images/u10.gif"> {$lang.label_affiliate}</a>-->
+<!-- {/if} -->
+<!--<a href="user.php?act=comment_list"{if $action eq 'comment_list'}class="curs"{/if}><img src="../images/u11.gif"> {$lang.label_comment}</a>-->
+<!--<a href="user.php?act=group_buy">{$lang.label_group_buy}</a>-->
+<!--<a href="user.php?act=track_packages"{if $action eq 'track_packages'}class="curs"{/if}><img src="../images/u12.gif"> {$lang.label_track_packages}</a>-->
+<!--<a href="user.php?act=account_log"{if $action eq 'account_log'}class="curs"{/if}><img src="../images/u13.gif"> {$lang.label_user_surplus}</a>-->
+<!--{if $show_transform_points}-->
+<a href="user.php?act=transform_points"{if $action eq 'transform_points'}class="curs"{/if}><img src="../images/u14.gif"> {$lang.label_transform_points}</a>
+<!--{/if}-->
+<!--<a href="user.php?act=logout" style="background:none; text-align:right; margin-right:10px;"><img src="../images/bnt_sign.gif"></a>-->
+</div>

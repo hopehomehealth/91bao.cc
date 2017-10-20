@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="Keywords" content="{$keywords}" />
+    <meta name="Description" content="{$description}" />
+    <!-- TemplateBeginEditable name="doctitle" -->
+    <title>{$page_title}</title>
+    <!-- TemplateEndEditable --><!-- TemplateBeginEditable name="head" --><!-- TemplateEndEditable -->
+    <link rel="shortcut icon" href="favicon.ico" />
+    <!--<link rel="icon" href="animated_favicon.gif" type="image/gif" />-->
+    <link href="{$ecs_css_path}" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="/html/css/page-common.css">
+    <link rel="stylesheet" type="text/css" href="/html/css/claim-center.css">
+    {* 包含脚本文件 *}
+    {insert_scripts files='common.js'}
+    <script type="text/javascript">
+        function $id(element) {
+            return document.getElementById(element);
+        }
+        //切屏--是按钮，_v是内容平台，_h是内容库
+        function reg(str){
+            var bt=$id(str+"_b").getElementsByTagName("h2");
+            for(var i=0;i<bt.length;i++){
+                bt[i].subj=str;
+                bt[i].pai=i;
+                bt[i].style.cursor="pointer";
+                bt[i].onclick=function(){
+                    $id(this.subj+"_v").innerHTML=$id(this.subj+"_h").getElementsByTagName("blockquote")[this.pai].innerHTML;
+                    for(var j=0;j<$id(this.subj+"_b").getElementsByTagName("h2").length;j++){
+                        var _bt=$id(this.subj+"_b").getElementsByTagName("h2")[j];
+                        var ison=j==this.pai;
+                        _bt.className=(ison?"":"h2bg");
+                    }
+                }
+            }
+            $id(str+"_h").className="none";
+            $id(str+"_v").innerHTML=$id(str+"_h").getElementsByTagName("blockquote")[0].innerHTML;
+        }
+
+    </script>
+    <script src="/js/jquery-3.1.1.js"></script>
+</head>
+<body class="claim-aboutus">
+<!-- #BeginLibraryItem "/library/page_header.lbi" --><!-- #EndLibraryItem -->
+<div class="container">
+    <!--当前位置
+    <div class="block box">
+        <div id="ur_here"> <!-- #BeginLibraryItem "/library/ur_here.lbi" --><!-- #EndLibraryItem --> </div>
+    </div>
+    -->
+<div class="lipei_con">
+    <div class="flow_path">
+        <h1>在线理赔流程</h1>
+        <div class="flow_chart">
+            <dl>
+                <dt><img src="/html/imgs/chart1.png" alt=""></dt>
+                <dd><span>拍照上传资料</span></dd>
+                <dd><p>按照所需清单将材料</p></dd>
+                <dd><p>准备好，并拍照上传</p></dd>
+                <dd class="heng1"><img src="/html/imgs/tiao.png" alt=""></dd>
+            </dl>
+            <dl>
+                <dt><img src="/html/imgs/chart2.png" alt=""></dt>
+                <dd><span>91保初审</span></dd>
+                <dd><p>91保初审材料，协助您</p></dd>
+                <dd><p>准备并指出遗漏的材料</p></dd>
+                <dd class="heng2"><img src="/html/imgs/tiao.png" alt=""></dd>
+
+            </dl>
+            <dl>
+                <dt><img src="/html/imgs/chart3.png" alt=""></dt>
+                <dd><span>提交保险公司</span></dd>
+                <dd><p>91保联系保险公司的理赔</p></dd>
+                <dd><p>专员，接手您的理赔案件</p></dd>
+                <dd  class="heng3"><img src="/html/imgs/tiao.png" alt=""></dd>
+            </dl>
+            <dl>
+                <dt><img src="/html/imgs/chart4.png" alt=""></dt>
+                <dd><span>领取赔偿金</span></dd>
+                <dd><p>保险公司优先立案，保证您</p></dd>
+                <dd><p>更快的领取到赔偿金</p></dd>
+            </dl>
+        </div>
+      <!--  <div class="flow_img">
+            <img src="/html/imgs/li.jpg" alt="">
+            <img src="/html/imgs/fw-chart.jpg" alt="">
+        </div>-->
+    </div>
+
+ <!--   <div class="bao_tel" >
+        <h1>报案电话</h1>
+        <p>91保销售的保险产品由保险公司承保，您可以通过91保客服热线400-606-7171提出免费协助及代报案，或者拨打保险公司电话提出理赔申请，也可以前往保险公司各地营业网点办理。</p>
+        <div class="tel">
+            <ul>
+                <li>
+                    <a href="javascript:;"><span>中国平安：</span><i>95511</i></a>
+                    <a href="javascript:;"><span>中国太平：</span><i>95589</i></a>
+                    <a href="javascript:;"><span>中国人寿：</span><i>95519</i></a>
+                    <a href="javascript:;"><span>美国史带：</span><i>40099-95507</i></a>
+                    <a href="javascript:;"><span>太保安联：</span><i>95500</i></a><br>
+                    <a href="javascript:;"><span>国华人寿：</span><i>95549</i></a>
+                    <a href="javascript:;"><span>中国永安：</span><i>95502</i></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    -->
+
+
+</div>
+    <!-- #BeginLibraryItem "/library/page_footer.lbi" --><!-- #EndLibraryItem -->
+</body>
+</html>

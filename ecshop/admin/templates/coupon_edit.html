@@ -1,0 +1,13 @@
+<div class="rechargeable" style="width:100%;text-align:center;" >
+	<p>管理员代金卷充值</p>
+	<form action="coupon.php?act=update" method="post">
+		<p> <input type="hidden" value="{$list.coupon_id}"  name="id"></p>
+		<p style="margin-left: 32px;">用户名: <input type="text" style="height: 30px;" name="mobile" value="{$list.telephone}"/></p>
+		<p>代金券卡号: <input type="text" style="height: 30px;" name="card_num" value="{$list.card_num}" /></p>
+		<p>
+			未使用:<input type="radio" name="status" value="0" {if $list.status eq 0}checked{/if}>
+			已充值:<input type="radio" name="status" value="1" {if $list.status eq 1}checked{/if}>
+		</p>
+		<input type="submit" style="margin-left:218px;" value="保存"/>
+	</form>
+</div>

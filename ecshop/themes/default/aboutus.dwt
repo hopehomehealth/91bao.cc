@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="Keywords" content="{$keywords}" />
+    <meta name="Description" content="{$description}" />
+    <!-- TemplateBeginEditable name="doctitle" -->
+    <title>{$page_title}</title>
+    <!-- TemplateEndEditable --><!-- TemplateBeginEditable name="head" --><!-- TemplateEndEditable -->
+    <link rel="shortcut icon" href="favicon.ico" />
+    <!--<link rel="icon" href="animated_favicon.gif" type="image/gif" /> @wuwp 20170531 -->
+    <link href="{$ecs_css_path}" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="/html/css/page-common.css">
+    <link rel="stylesheet" type="text/css" href="/html/css/aboutus2.css">
+    {* 包含脚本文件 *}
+    {insert_scripts files='common.js'}
+    <script type="text/javascript">
+        function $id(element) {
+            return document.getElementById(element);
+        }
+        //切屏--是按钮，_v是内容平台，_h是内容库
+        function reg(str){
+            var bt=$id(str+"_b").getElementsByTagName("h2");
+            for(var i=0;i<bt.length;i++){
+                bt[i].subj=str;
+                bt[i].pai=i;
+                bt[i].style.cursor="pointer";
+                bt[i].onclick=function(){
+                    $id(this.subj+"_v").innerHTML=$id(this.subj+"_h").getElementsByTagName("blockquote")[this.pai].innerHTML;
+                    for(var j=0;j<$id(this.subj+"_b").getElementsByTagName("h2").length;j++){
+                        var _bt=$id(this.subj+"_b").getElementsByTagName("h2")[j];
+                        var ison=j==this.pai;
+                        _bt.className=(ison?"":"h2bg");
+                    }
+                }
+            }
+            $id(str+"_h").className="none";
+            $id(str+"_v").innerHTML=$id(str+"_h").getElementsByTagName("blockquote")[0].innerHTML;
+        }
+
+    </script>
+    <script src="/js/jquery-3.1.1.js"></script>
+
+</head>
+<body class="claim-aboutus">
+<!-- #BeginLibraryItem "/library/page_header.lbi" --><!-- #EndLibraryItem -->
+<div class="container" >
+    <div class="main-width about-all">
+
+        <div class="left-nav">
+            <ul>
+                <li tab="us" class="{if $index eq 1}active {/if} value="company-profile"><a href="#">公司简介</a></li>
+                <li tab="us" class="{if $index eq 2}active {/if}"><a href="#">联系我们</a></li>
+            </ul>
+        </div>
+
+        <div class="about-right">
+            <!--  初始文本  -->
+            <div class="new_about_company {if $index eq 1}hidden-container {/if}" id="company-profile">
+                <h3>关于91保</h3>
+                <p class="p">
+                91保，中国创新型互联网综合保险服务平台，成立于2014年7月。91保业务范围涵盖健康险、车险、意外险及航旅险，
+                以“量身定制、面面俱到”为产品理念，致力于在广大客户遇到各种意外时提供合适、专业、高性价比的安全保障。
+                </p>
+                <p class="list_t">企业理念</p>
+                <p class="sub_t">量身定制，面面俱到</p>
+                <p class="list_i">量身定制：通过产品创新、技术创新和服务优化等多种方式，综合客户健康、资金、
+                航旅等多方面的不同保险需求，智能推荐符合客户需求的保险产品，并为客户量身定制专属自己的高性价比全面保障计划，
+                让每个客户的衣食住行都有91保的陪伴和保障。
+                </p>
+                <p class="list_i">面面俱到：从产品类型上分，91保的服务内容涵盖健康险、意外险、车险及航旅险；
+                从受保对象上分，91保的服务对象分为儿童、成人及老年人。根据不同内容及服务对象设计不同的保险产品，
+                从衣食住行到男女老少，面面俱到的将客户生活的每个安全隐患防范于未然。
+                </p>
+
+                <p class="list_t">企业愿景</p>
+                <p class="p">91保致力于将互联网与保险全面有机融合，打通并整合各大保险公司资源，挑选并整理不同类别保险产品，
+                并为客户量身定制专属自己的全面保险计划，让客服用最少的时间挑选产品，得到最优质的保险服务。在整个过程中压缩成本，
+                节省人力物力财力，让保险更简单，让服务更便利，让安全更容易。
+                </p>
+
+                <p class="list_t">核心优势</p>
+                <p class="list_i">产品研发：91保直接切入产品研发前端，用互联网的优势改变传统保险形态，
+                将传统保险捆绑的风险进行拆解，使保险更符合消费者的个性化需求，降低保险的购买成本。
+                </p>
+                <p class="list_i">技术创新：公司通过全行业大数据标签化分析，针对目标用户购买力进行保险产品设计，
+                使得用户可以根据自己的实际财力量力采购保险产品，真正做到“有保想买，有保可买，有保会买”的消费场景的真实搭建；
+                通过数据的跨行业融合，对不同行业的目标用户实现资源互换共享，将闲置资源交换成等价保险投入，加大个人保险投保投入，
+                提高个人风险保障。
+                </p>
+
+                <p class="list_t">特色产品</p>
+                <p class="list_i">健康险：个人齿科医疗保险、老年恶性肿瘤医疗保险。</p>
+                <p class="list_i">意外险：“乐行人生”交通工具意外险、全球驾意险、个人账户资金损失保险、
+                房地产方面的个人财产保险、全方面的个人家庭财产保险等。
+                </p>
+                <p class="list_i">汽车险：太平洋汽车保险等。</p>
+                <p class="list_i">航旅险：境内旅行保险、境外旅行保险、申根旅行保险。</p>
+                <p class="list_i">儿童类重大疾病保险、成人重大疾病保险等。</p>
+            </div>
+
+            <!--  第二个按钮对应的文本  -->
+            <div class="new_about_company {if $index eq 2}hidden-container active{/if}" id="contact-us">
+                <p class="list_t">联系方式</p>
+                <p class="sub_r">联系电话：<span>021-68580710</span></p>
+                <p class="sub_r">邮政编码：<span>201203</span></p>
+                <p class="sub_r">通讯地址：<span>上海市浦东新区张江高科技术园区居里路123号401室</span></p>
+                <p class="sub_r">乘车路线：<span>地铁2号线金科路站、浦东22路、大桥六线、张江环线、778</span></p>
+                <p class="sub_r">地图信息：<span><img src="/html/imgs/address-map.jpg"></span></p>
+
+                <p class="list_t">公司简介</p>
+                <p class="p">91保致力于将互联网与保险全面有机融合，打通并整合各大保险公司资源，挑选并整理不同类别保险产品，
+                                并为客户量身定制专属自己的全面保险计划，让客服用最少的时间挑选产品，得到最优质的保险服务。在整个过程中压缩成本，
+                                节省人力物力财力，让保险更简单，让服务更便利，让安全更容易。
+                </p>
+            </div>
+            <!--  第三个 按钮对应的文本  -->
+
+        </div>
+    </div>
+</div>
+<script src="/html/js/aboutus.js"></script>
+<!-- #BeginLibraryItem "/library/page_footer.lbi" --><!-- #EndLibraryItem -->
+</body>
+</html>

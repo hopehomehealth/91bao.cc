@@ -1,0 +1,16 @@
+<div class="app-container with-navbar with-tabbar" ng-controller="CouponController">
+
+    <div class="navbar fixed-top">
+        <div class="navbar-left hide-weixin" ng-click="goBack()">
+            <img class="button-icon" src="image-current/nav-left.png"/>
+            <!--<div class="button-text">返回</div>-->
+        </div>
+        <div class="navbar-title">
+            充值信息
+        </div>
+        <div class="navbar-right">
+        </div>
+    </div>
+    <div class="coupon-msg">充值失败！</div>
+    <div class="coupon-failmsg">{{error_desc}}</div>
+</div>

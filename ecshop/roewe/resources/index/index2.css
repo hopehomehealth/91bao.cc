@@ -1,0 +1,186 @@
+/*样式文件兼容大屏 IE 等不同浏览器*/
+html,body{margin:0;padding:0;height: 100%;width: 100%;}
+body{
+    background-color: #000000;
+}
+.container{
+    background: url(../images/home-page2.jpg) no-repeat center top;
+    /*width: 100%;*/
+    /*height: 100%;*/
+    /*min-width: 1100px;*/
+    /*background-size: cover;*/
+    /*-moz-background-size: cover;*/
+    /*background-size:100% 100%;*/
+    /*-moz-background-size:100% 100%;*/
+    width: 100%;
+    height: 900px;
+    min-width: 1100px;
+    min-height: 950px;
+}
+
+.container .form-container{
+    position: absolute;
+    width: 100%;
+    bottom: 20px;
+    min-width: 1100px;
+}
+
+.container .form-container form{
+    display: block;
+    width: 1000px;
+    margin: auto;
+    padding: 15px;
+    /*background-color: #1b6d85;*/
+    color: #ffffff;
+}
+
+.container .form-container form table{
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.container .form-container form table tr td{
+    /*border: 1px solid #ffffff;*/
+    position: relative;
+    height: 32px;
+}
+
+.container .form-container form table tr td:nth-child(even){
+    width: 33%;
+}
+.container .form-container form table tr td:nth-child(1){
+    width: 13%;
+    text-align: right;
+}
+.container .form-container form table tr td:nth-child(3){
+    width: 21%;
+    text-align: right;
+}
+
+.container .form-container form table tr:nth-child(8) td{
+    height: 55px;
+    text-align: center;
+    vertical-align: middle;
+}
+.container .form-container form table tr .continue-td{
+    /*text-align: center;*/
+    vertical-align: middle;
+}
+/*.container .form-container form table tr .continue-td a{*/
+/*text-decoration:none;*/
+/*border-radius: 1px;*/
+/*background-color: #c60818;*/
+/*border: none;*/
+/*color: #ffffff;*/
+/*!*font-size: 16px;*!*/
+/*letter-spacing: 10px;*/
+/*!*font-weight: bolder;*!*/
+/*padding: 5px 120px;*/
+/*margin-left: 20px;*/
+/*}*/
+/*底部一行 继续 按钮*/
+.container .form-container form table tr:nth-child(8) td a{
+    text-decoration:none;
+    border-radius: 1px;
+    background-color: #c60818;
+    border: none;
+    color: #ffffff;
+    /*font-size: 16px;*/
+    letter-spacing: 10px;
+    /*font-weight: bolder;*/
+    padding: 10px 120px;
+    margin-left: 20px;
+}
+
+/*验证码按钮*/
+.container .form-container form table tr:first-child td a{
+    text-decoration:none;
+    border-radius: 1px;
+    /*background: -webkit-gradient(linear,left top,left bottom, from(#fefefe), to(#ededed));*/
+    background-color: #ededed;
+    color: #000000;
+    font-size: 14px;
+    /*letter-spacing: 10px;*/
+    font-weight: bolder;
+    padding: 5px 15px;
+    margin-left: 8px;
+}
+.container .form-container form table tr:nth-child(2) td a:hover,
+.container .form-container form table tr:nth-child(8) td a:hover{
+    /*background-color: #c60818;*/
+    /*box-shadow: 0px 4px 1px #888888;*/
+}
+
+
+.container .form-container form table tr td input{
+    /*width: 98%;*/
+    width: 290px;
+    margin-left: 20px;
+    height: 20px;
+    line-height: 20px;
+}
+
+.container .form-container form table tr td.form-radio input{
+    width: 25px;
+    height: 20px;
+    line-height: 25px;
+    /*margin: 20px;*/
+}
+/*验证码按钮*/
+.container .form-container form table tr td #verification-code{
+    width: 140px;
+}
+
+
+/*消息提示框*/
+.msgTips-container{
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: #9d9d9d;
+    /*opacity:0.5;*/
+    /*filter:alpha(opacity=50); */
+}
+
+.msgTips-container .msgTips{
+    /*position: fixed;*/
+    margin: 300px auto;
+    /*top: 300px;*/
+    z-index: 2000000000;
+    border-radius: 2px;
+    background-color: #DBDBDB;
+    border: #DBDBDB 1px solid;
+    overflow: hidden;
+    height: 200px;
+    width: 400px;
+}
+.msgTips-container .msgTips .msgTip-title{
+    /*height: 30px;*/
+    width: 100%;
+    background-color: #eb9316;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 5px;
+}
+.msgTips-container .msgTips .msgTip-title span{
+    float: right;
+    margin-right: 20px;
+    cursor: pointer;
+}
+.msgTips-container .msgTips .msgTip-main .tipBtn-container{
+    margin-top: 10px;
+    padding-left: 130px;
+}
+.msgTips-container .msgTips .msgTip-main a{
+    text-decoration: none;
+    color: #ffffff;
+    background-color: #eb9316;
+    padding: 5px 20px;
+}
+.msgTips-container .msgTips .msgTip-main .tipLabel-container{
+    padding: 30px;
+    height: 60px;
+}

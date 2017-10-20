@@ -1,0 +1,43 @@
+<div class="app-container with-navbar with-tabbar" ng-controller="BalanceRechargeController">
+
+    <div class="navbar fixed-top">
+        <div class="navbar-left hide-weixin" ng-click="goProfile()">
+            <img class="button-icon" src="image-current/nav-left.png"/>
+        </div>
+        <div class="navbar-title">
+            余额充值
+        </div>
+        <div class="navbar-right">
+        </div>
+    </div>
+
+    <div class="address-form" >
+        <div class="form-item" >
+            <div class="item-title">
+                充值金额
+            </div>
+            <div class="item-input">
+                <input type="text" placeholder="填写充值金额" ng-model="card_num"/>
+            </div>
+        </div>
+        <div class="form-item wi100" >
+            <!--<div class="item-input">-->
+                <!--<input type="radio" name="payType"  ng-model="pay_type" checked="true"/><a>支付宝支付</a>-->
+                <!--<input type="radio" name="payType" value="0" ng-model="pay_type"/><a>微信支付</a>-->
+            <!--</div>-->
+            <label class="radio-inline" ng-class="{active: pay_type=='alipay'}" ng-click="touchPayType('alipay')">
+                <div class="item-checkbox"></div>
+                <a>支付宝支付</a>
+            </label>
+            <label class="radio-inline" ng-class="{active: pay_type=='wx'}" ng-click="touchPayType('wx')">
+                <div class="item-checkbox"></div>
+                <a>微信支付</a>
+            </label>
+        </div>
+    </div>
+    <div class="changepass-submit" ng-click="recharge()">
+        充值
+    </div>
+
+</div>
+

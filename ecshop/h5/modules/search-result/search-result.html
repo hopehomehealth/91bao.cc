@@ -1,0 +1,136 @@
+<div class="app-container with-navbar" ng-controller="SearchResultController">
+    <div class="navbar fixed-top" ng-if="navStyle == 'default'">
+        <!--<div class="navbar-left hide-weixin" ng-click="goBack()">-->
+            <!--<img class="button-icon" ng-src="image-current/nav-left.png"/>-->
+        <!--</div>-->
+        <div class="navbar-title">
+          <!--{{navTitle || '搜索结果'}}-->
+            商城
+        </div>
+    </div>
+
+    <div class="navbar fixed-top" ng-if="navStyle == 'search'">
+        <div class="search-inline">
+            <img class="search-icon" ng-src="image/ind-search.png"/>
+            <form ng-submit="touchSearch()">
+                <input class="search-text" placeholder="请填写您要搜索的商品" ng-model="$parent.currentKeyword">
+            </form>
+        </div>
+        <div class="search-cancel" ng-click="goBack()">取消</div>
+    </div>
+
+    <div class="app-content market" infinite-scroll='loadMore()'>
+        <!--<div class="search-filter">-->
+            <!--<div class="filter-item" ng-class="{active: currentSortKey == ENUM.SORT_KEY.DEFAULT}" ng-click="touchSortDefault()">-->
+                <!--<span class="text">综合</span>-->
+            <!--</div>-->
+            <!--<div class="filter-item" ng-class="{active: currentSortKey == ENUM.SORT_KEY.SALE}" ng-click="touchSortSale()">-->
+                <!--<span class="text">销量</span>-->
+            <!--</div>-->
+            <!--<div class="filter-item" ng-class="{active: currentSortKey == ENUM.SORT_KEY.DATE}" ng-click="touchSortDate()">-->
+                <!--<span class="text">新品</span>-->
+            <!--</div>-->
+            <!--<div class="filter-item" ng-class="{active: currentSortKey == ENUM.SORT_KEY.PRICE}" ng-click="touchSortPrice()">-->
+                <!--<span class="text">价格</span>-->
+                <!--<div class="arrow">-->
+                    <!--<img class="ind" ng-class="{active : currentSortKey == ENUM.SORT_KEY.PRICE && (currentSortValue == ENUM.SORT_VALUE.DEFAULT || currentSortValue == ENUM.SORT_VALUE.ASC)}" ng-src="image/ind-arrow-up.png"/>-->
+                    <!--<img class="ind" ng-class="{active : currentSortKey == ENUM.SORT_KEY.PRICE && (currentSortValue == ENUM.SORT_VALUE.DESC)}" ng-src="image/ind-arrow-down.png"/>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="filter-item" ng-class="{active: currentSortKey == ENUM.SORT_KEY.CREDIT}" ng-click="touchSortCredit()">-->
+                <!--<span class="text">信用</span>-->
+            <!--</div>-->
+            <!--  商品导航
+            <div class="filter-item" ng-click="touchMain('')" ng-class="{active: !currentCategory}">
+                <span class="text">全部</span>
+            </div>
+            <div class="filter-item-container">
+                <div class="filter-item"
+                     ng-class="{active: item.id == currentCategory}"
+                     ng-repeat="item in subCategories track by $index" ng-click="touchMain(item)" >
+                    <span class="text">{{item.name}}</span>
+                </div>
+                <img class="item-mask" src="image-current/nav-listMask.png" ng-click="toNextTab()">
+                <img class="item-drop" src="image-current/nav-listDrop.png" ng-click="toNextTab()">
+            </div>
+            -->
+        <!--</div>-->
+        <div class="market-nav">
+            <div class="nav-item" ng-click="touchMain('')" ng-class="{active: item.id == currentCategory}">
+                <img ng-src="image/default-photo.png" lazy-img="image/market-imgs/nav-all{{(item.id == currentCategory)?'-full':''}}.png">
+                <a>全部</a>
+            </div>
+            <div class="nav-item" ng-repeat="item in subCategories track by $index" ng-click="touchMain(item)" ng-class="{active: item.id == currentCategory}">
+                <img ng-src="image/default-photo.png" lazy-img="image/market-imgs/nav-{{item.id+((item.id == currentCategory) ? '-full' :'')}}.png">
+                <a>{{item.name}}</a>
+            </div>
+            <!--<div class="nav-item" ng-repeat="item in subCategories1 track by $index" ng-click="touchMain(item)" ng-class="{active: item.id == currentCategory}">-->
+                <!--<img ng-src="image/default-photo.png" lazy-img="image/market-imgs/nav-{{item.id+((item.id == currentCategory) ? '-full' :'')}}.png">-->
+                <!--<a>{{item.name}}</a>-->
+            <!--</div>-->
+        </div>
+
+
+        <div class="search-product" ng-if="products && products.length">
+            <div class="product-item" ng-repeat="product in products track by $index" ng-click="touchProduct(product)">
+                <div class="item-photo">
+                    <!--<img ng-src="image/default-photo.png" lazy-img="{{product.default_photo.large}}"/>-->
+                    <img ng-src="image/default-photo.png" lazy-img="{{product.photos[0].thumb}}"/>
+                    <!--  商品标签  -->
+                    <img class="img-tip" ng-src="image-current/boutique-pic.png" ng-if="product.is_best">
+                    <img class="img-tip" ng-src="image-current/selling-pic.png" ng-if="product.is_hot">
+                    <img class="img-tip" ng-src="image-current/new-pic.png" ng-if="product.is_new">
+                </div>
+                <div class="item-name">{{product.name}}</div>
+                <div class="item-label">
+                    <a ng-repeat="tags in product.tags track by $index">{{tags.name}}</a>
+                </div>
+                <div class="item-footer">
+                    <div class="footer-sales">已经售出{{product.sales_count}}件</div>
+                    <div class="footer-price">￥{{product.current_price}}<span>起</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="empty" ng-if="isEmpty">
+            <div class="empty-item">
+                <img class="item-logo" ng-src="image/logo-product-empty.png"/>
+                <div class="item-text">暂无任何商品</div>
+            </div>
+        </div>
+
+        <div class="loading-more" ng-if="isLoaded && isLoading">
+            正在加载...
+        </div>
+        <div class="loading-more" ng-if="isLoaded && isLastPage">
+            全部加载完毕
+        </div>
+
+    </div>
+<!--  遮罩  -->
+    <div class="item-shell" ng-show="isHell">
+        <div class="item-nav"
+             ng-class="{active: item.id == currentCategory}"
+             ng-repeat="item in subCategories1" ng-click="touchMain(item)">{{item.name}}</div>
+    </div>
+
+    <div class="tabbar fixed-bottom">
+        <div class="tab" ng-click="goHome()">
+            <img class="tab-icon" ng-src="image/tab-imgs/tab-home-normal.png"/>
+            <a>首页</a>
+        </div>
+        <div class="tab active" ng-click="goShoppingMall()">
+            <img class="tab-icon" ng-src="image/tab-imgs/tab-category-active.png"/>
+            <a class="tab-red">商城</a>
+        </div>
+        <div class="tab" ng-click="goCustomerService()">
+            <img class="tab-icon" ng-src="image/tab-imgs/tab-service-normal.png">
+            <a>客服</a>
+        </div>
+        <div class="tab" ng-click="goProfile()">
+            <img class="tab-icon" ng-src="image/tab-imgs/tab-profile-normal.png"/>
+            <a>我的</a>
+        </div>
+    </div>
+
+</div>

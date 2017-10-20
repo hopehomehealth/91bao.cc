@@ -1,0 +1,201 @@
+<div class="app-container with-navbar with-tabbar" ng-controller="CarOrderDetailController">
+
+    <div class="navbar fixed-top">
+        <!--<div class="navbar-left hide-weixin" ng-click="goBack()" ng-if="!afterSubmit">-->
+            <!--<img class="button-icon" ng-src="image-current/nav-left.png"/>-->
+        <!--</div>-->
+        <div class="navbar-left hide-weixin" ng-click="gotoCarOrder()" ng-if="!afterSubmit">
+            <img class="button-icon" ng-src="image-current/nav-left.png"/>
+        </div>
+        <div class="navbar-left hide-weixin" ng-click="goHome()" ng-if="afterSubmit">
+            <img class="button-icon" ng-src="image-current/nav-left.png"/>
+        </div>
+        <div class="navbar-title">
+            车险保单详情
+        </div>
+    </div>
+
+    <div class="app-content maBottom70" ng-if="isLoaded">
+
+        <!-- Status
+        <div class="order-status" ng-if="order.status == ENUM.ORDER_STATUS.CREATED">
+            <img ng-src="image/icon-order-light.png">待支付
+        </div>
+        <div class="order-status" ng-if="order.status == ENUM.ORDER_STATUS.PAID">
+            <img ng-src="image/icon-order-light.png">保障中
+        </div>
+        <div class="order-status" ng-if="order.status == ENUM.ORDER_STATUS.DELIVERING">
+            <img ng-src="image/icon-order-light.png">待续保
+        </div>
+        <div class="order-status" ng-if="order.status == ENUM.ORDER_STATUS.DELIVERIED">
+            <img ng-src="image/icon-order-light.png">待续保
+        </div>
+        <div class="order-status" ng-if="order.status == ENUM.ORDER_STATUS.FINISHED">
+            <img ng-src="image/icon-order-light.png">待续保
+        </div>
+        <div class="order-status" ng-if="order.status == ENUM.ORDER_STATUS.CANCELLED">
+            <img ng-src="image/icon-order-light.png">已取消
+        </div>
+        -->
+
+        <!-- Status -->
+        <div class="order-title">订单信息</div>
+        <div class="order-status" ng-if="order.status == ENUM.ORDER_STATUS.PAID">
+            订单状态：<span class="status-red">未支付</span>
+        </div>
+        <div class="order-status" ng-if="order.status == ENUM.ORDER_STATUS.DELIVERING">
+            订单状态：<span>处理中</span>
+        </div>
+        <div class="order-status" ng-if="order.status == ENUM.ORDER_STATUS.DELIVERIED">
+            订单状态：<span class="status-green">保障中</span>
+        </div>
+        <div class="order-status" ng-if="order.status == ENUM.ORDER_STATUS.FINISHED">
+            订单状态：<span>保障中</span>
+        </div>
+        <div class="order-status" ng-if="order.status == ENUM.ORDER_STATUS.OVER_PROTECTION">
+            订单状态：<span>已完成</span>
+        </div>
+        <div class="order-status" ng-if="order.status == ENUM.ORDER_STATUS.CANCELLED">
+            订单状态：<span class="status-gray">已取消</span>
+        </div>
+
+        <!--  车险订单详情  -->
+        <div class="order-goods">
+            <div class="goods-item">
+                <div class="item-photo">
+                    <img ng-src="image/default-photo.png" lazy-img="{{order.goods.goods_img.thumb}}" ng-click="touchProduct(goods.product)"/>
+                </div>
+                <div class="item-info">
+                    <div class="info-name">
+                        {{order.goods.goods_name}}
+                    </div>
+                    <div class="info-attr">
+                        {{goods.property}}
+                    </div>
+                    <div class="info-price">
+                        {{goods.product_price}}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total -->
+        <div class="order-summury botom10">
+            <div class="summury-detail">
+                订单编号：<span class="total-price">{{order.sn}}</span>
+            </div>
+            <div class="summury-detail">
+                行驶城市：<span class="total-price">{{order.drive_city}}</span>
+            </div>
+            <div class="summury-detail">
+                车牌号：<span class="total-price">{{order.car_num}}</span>
+            </div>
+            <div class="summury-detail">
+                新车未上保险：<span class="total-price">{{formateIsNew(order.is_new)}}</span>
+            </div>
+            <div class="summury-detail">
+                身份证号：<span class="total-price">{{order.recognizee_cardnum}}</span>
+            </div>
+            <div class="summury-detail">
+                车主生日：<span class="total-price">{{order.recognizee_brithday}}</span>
+            </div>
+            <div class="summury-detail">
+                手机号码：<span class="total-price">{{order.recognizee_phone}}</span>
+            </div>
+            <div class="summury-detail">
+                车架号：<span class="total-price">{{order.frame_number}}</span>
+            </div>
+            <div class="summury-detail">
+               发动机号： <span class="total-price">{{order.engine_number}}</span>
+            </div>
+            <div class="summury-detail">
+                品牌型号：<span class="total-price">{{order.car_brand}}</span>
+            </div>
+            <div class="summury-detail">
+                注册登记日期：<span class="total-price">{{order.record_date}}</span>
+            </div>
+            <div class="summury-detail">
+                上一年是否发生所有权转移：<span class="total-price">{{formateIsTransfer(order.is_transfer)}}</span>
+            </div>
+
+            <!--<div class="summury-detail" ng-if="order.status == ENUM.ORDER_STATUS.CREATED">-->
+                <!--支付状态：<span class="total-price">处理中</span>-->
+            <!--</div>-->
+            <div class="summury-detail" ng-if="order.status == ENUM.ORDER_STATUS.PAID">
+                支付状态：<span class="total-price">处理中</span>
+            <div class="summury-detail" ng-if="order.status == ENUM.ORDER_STATUS.DELIVERING">
+                支付状态：<span class="total-price">支付成功</span>
+            </div>
+            <div class="summury-detail" ng-if="order.status == ENUM.ORDER_STATUS.DELIVERIED">
+                支付状态：<span class="total-price">支付成功</span>
+            </div>
+            <div class="summury-detail" ng-if="order.status == ENUM.ORDER_STATUS.FINISHED">
+                支付状态：<span class="total-price">支付成功</span>
+            </div>
+            <div class="summury-detail" ng-if="order.status == ENUM.ORDER_STATUS.CANCELLED">
+                支付状态：<span class="total-price">支付失败</span>
+            </div>
+
+        </div>
+
+        <!-- Info
+        <div class="order-info">
+
+            <div class="info-text">
+                创建时间：{{order.created_at | localTime}}
+            </div>
+            <div class="info-text" ng-if="order.updated_at">
+                更新时间：{{order.updated_at | localTime}}
+            </div>
+            <div class="info-text" ng-if="order.paied_at">
+                支付时间：{{order.paied_at | localTime}}
+            </div>
+            <div class="info-text" ng-if="order.shipping_at">
+                发货时间：{{order.shipping_at | localTime}}
+            </div>
+            <div class="info-text" ng-if="order.finish_at">
+                完成时间：{{order.finish_at | localTime}}
+            </div>
+            <div class="info-text" ng-if="order.canceled_at">
+                取消时间：{{order.canceled_at | localTime}}
+            </div>
+        </div>
+        -->
+        <!-- Dialog -->
+        <div id="dialog" ng-show="showDialog">
+            <div class="mask">
+            </div>
+            <div class="dialog danger">
+                <div class="dialog-title">
+                    确认取消
+                </div>
+                <div class="dialog-content">
+                    是否取消该订单
+                </div>
+                <div class="dialog-button">
+                    <div class="button left" ng-click="touchDialogCancel()">
+                        取消
+                    </div>
+                    <div class="button right" ng-click="touchDialogConfirm()">
+                        确认
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Submit 
+        <div class="order-submit fixed-bottom">
+            <div class="submit-button dark" ng-if="order.status == ENUM.ORDER_STATUS.PAID" ng-click="touchPay()">
+                去支付
+            </div>
+            <div class="submit-button" ng-if="order.status == ENUM.ORDER_STATUS.PAID" ng-click="touchCancel()">
+                取消订单
+            </div>
+            <div class="submit-button dark" ng-if="order.status == ENUM.ORDER_STATUS.DELIVERIED" ng-click="touchComment()">
+                评价
+            </div>
+        </div>
+		-->
+    </div>
+
+</div>

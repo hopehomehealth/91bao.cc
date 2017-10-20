@@ -1,0 +1,92 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+<script type="text/javascript">
+var process_request = "{$lang.process_request}";
+</script>
+<div class="top-bar">
+  <div class="fd_top fd_top1">
+    <!--<div class="bar-left">   修改属性-->
+    <div class="bar-right">
+          <div class="top_menu1"> {insert_scripts files='transport2.js,utils.js'} <font id="ECS_MEMBERZONE">{* ECSHOP 提醒您：根据用户id来调用member_info.lbi显示不同的界面  *}{insert name='member_info'} </font> </div>
+    </div>
+    <div class="bar-cart">
+      <div class="fl cart-yh">
+        <a href="user.php" class="">用户中心</a>
+      </div>
+      <!-- 隐藏购物车链接 @wuwp 20170526
+      <!-- #BeginLibraryItem "/library/cart.lbi" --> {insert_scripts files='transport.js'}
+      <div class="cart" id="ECS_CARTINFO"> {insert name='cart_info'} </div>
+       -->
+    </div>
+  </div>
+</div>
+<div class="nav-menu">
+  <div class="wrap">
+    <!--<div class="logo"><a href="../index.php" name="top"><img src="../images/logo.jpg" /></a></div>-->
+    <!--  替换LOGO 图片 @wuwp 20170519  -->
+    <div class="logo"><a href="../index.php" name="top"><img src="../images/homePage/logo.png" alt="大特保背景图片"/></a></div>
+    <div id="mainNav" class="clearfix maxmenu">
+      <div class="m_left">
+      <ul>
+        <li><a href="../index.php"{if $navigator_list.config.index eq 1} class="cur"{/if}>{$lang.home}</a></li>
+        <!-- {foreach name=nav_middle_list from=$navigator_list.middle item=nav} -->
+        <!-- {if $smarty.foreach.nav_middle_list.last}-->
+        <li><a href="{$nav.url}" 
+        
+          <!-- {if $nav.opennew eq 1} -->
+          target="_blank"
+          <!-- {/if} -->
+          >{$nav.name}</a></li>
+        <!-- {else} -->
+        <li><a href="{$nav.url}" 
+        
+          <!-- {if $nav.opennew eq 1} -->
+          target="_blank"
+          <!-- {/if} -->
+          >{$nav.name}</a></li>
+        <!-- {/if} -->
+        <!-- {if $nav.active eq 1} -->
+        <!-- {/if} -->
+        <!-- {/foreach} -->
+      </ul>
+      </div>
+    </div>
+    <!--  隐藏搜索框 改为我的保单 按钮   @wuwp 20170519
+    <div class="serach-box">
+      <form id="searchForm" name="searchForm" method="get" action="search.php" onSubmit="return checkSearchForm()" class="f_r">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td width="135"><input name="keywords" type="text" id="keyword" value="{$search_keywords|escape}" class="B_input"  /></td>
+            <td><input name="imageField" type="submit" value="搜索" class="go" style="cursor:pointer;" /></td>
+          </tr>
+        </table>
+      </form>
+    </div>
+    -->
+    <div class="my-policy">
+      <a id="my-policy-btn" href="javascript:myPolicy();">我的保单</a>
+    </div>
+
+  </div>
+</div>
+<div class="clear0 "></div>
+
+<!-- 打开 我的保单  @wuwp 20170526 -->
+<script src="/js/jquery-3.1.1.js"></script>
+<script>
+//获取 session 回调函数
+function loginsession_callback(result){
+    if(result == null){ return ;}
+    //判断是否登录
+    if(!result.content == '0'){             //登录状态--> 跳转到 我的保单界面
+        //window.location.href='';
+    }else{                                  //非登录状态-->跳转到 登录界面
+        window.location.href='/user.php';
+    }
+}
+//打开 我的保单
+function myPolicy(){
+    //获取 session 中登录状态
+    Ajax.call('/user.php?act=ajax_islive', null, loginsession_callback, 'POST', 'TEXT', true, true);
+}
+</script>

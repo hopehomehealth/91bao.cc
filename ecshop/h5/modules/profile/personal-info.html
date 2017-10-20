@@ -1,0 +1,43 @@
+<div class="app-container with-navbar" ng-controller="ProfileController">
+
+    <div class="navbar fixed-top">
+        <div class="navbar-left hide-weixin" ng-click="goBack()">
+            <img class="button-icon" src="image-current/nav-left.png"/>
+        </div>
+        <div class="navbar-title">
+            个人信息
+        </div>
+    </div>
+
+    <div class="app-content">
+
+        <div class="changepass-form">
+            <div class="changepass-field">
+                <a>手机号</a>
+                <input type="text" class="field-input" placeholder="请填写手机号" ng-model="user.username" readonly/>
+            </div>
+            <div class="changepass-hline"></div>
+            <div class="changepass-field">
+                <a>性别</a>
+                <label class="radio-inline paddL100" ng-click="touchSexRadio(1)">
+                    <div class="item-checkbox" ng-class="{active: user.sex=='1'}"></div>
+                    <span>男</span>
+                </label>
+                <label class="radio-inline" ng-click="touchSexRadio(0)">
+                    <div class="item-checkbox" ng-class="{active: user.sex=='0'}"></div>
+                    <span>女</span>
+                </label>
+            </div>
+            <div class="changepass-hline"></div>
+            <div class="changepass-field">
+                <a>邮箱</a>
+                <input type="text" class="field-input" placeholder="请填写邮箱" ng-model="user.email"/>
+            </div>
+        </div>
+        <div class="changepass-submit" ng-click="resetUser()">
+            保存
+        </div>
+
+    </div>
+
+</div>

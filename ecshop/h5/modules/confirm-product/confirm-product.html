@@ -1,0 +1,218 @@
+<div class="app-container with-navbar with-tabbar" ng-controller="ConfirmController">
+
+    <div class="navbar fixed-top">
+        <div class="navbar-left hide-weixin" ng-click="goBack()">
+            <img class="button-icon" src="image-current/nav-left.png"/>
+        </div>
+        <div class="navbar-title">
+            <!--确认订单-->
+            填写保单
+        </div>
+        <div class="navbar-right">
+        </div>
+    </div>
+
+    <!-- Address -->
+    <div class="order-title">被保人</div>
+    <div class="confirm-address" ng-click="touchAddress()">
+        <div class="address-detail maTop10" ng-if="!consignee">
+            新增被保人信息
+        </div>
+        <div class="address-contact" ng-if="consignee">
+            {{consignee.name}}&nbsp;
+            <!--<span class="contact-default" ng-if="consignee.is_default">本人</span>-->
+        </div>
+        <div class="address-detail" ng-if="consignee">
+            身份证     <span>{{consignee.card_num}}</span>
+        </div>
+        <div class="address-detail" ng-if="consignee">
+            手机号     <span>{{consignee.mobile}}</span>
+        </div>
+        <img class="address-arrow" src="image/nav-right.png"/>
+    </div>
+
+    <!--  添加监护人信息
+    <div class="order-title">监护人信息</div>
+    <div class="order-form">
+        <div class="form-item">
+            <div class="item-title">
+                监护人姓名
+            </div>
+            <div class="item-input">
+                <input type="text" placeholder="填写姓名" ng-model="name"/>
+            </div>
+        </div>
+        <div class="form-item" ng-click="touchCardTypePickerShow()" >
+            <div class="item-title">
+                证件类型
+            </div>
+            <div class="item-select" ng-if="card_type == null">
+                身份证
+            </div>
+            <div class="item-value" ng-if="card_type != null">
+                {{formatCardType(card_type)}}
+            </div>
+            <img class="item-arrow" src="image/nav-right.png"/>
+        </div>
+        <div class="form-item">
+            <div class="item-title">
+                证件号码
+            </div>
+            <div class="item-input">
+                <input type="text" placeholder="填写证件号码" ng-model="card_num"/>
+            </div>
+        </div>
+    </div>
+    -->
+
+
+    <!-- Goods -->
+    <div class="order-title">订单信息</div>
+    <div class="confirm-goods" ng-if = "selectedGoods.length > 0">
+        <div class="goods-item"
+             ng-repeat="card_good in selectedGoods track by $index"
+             ng-click="touchProduct(card_good)">
+
+            <div class="item-photo">
+                <img ng-src="image/default-photo.png" lazy-img="{{card_good.product.photos[0].thumb}}"/>
+            </div>
+
+            <div class="item-info">
+                <div class="info-name">
+                    {{card_good.product.name}}
+                </div>
+
+                <div class="info-attr">
+                    {{card_good.property}}
+                </div>
+
+                <div class="info-price">
+                    起价： ¥{{priceInfo.product_price|number:2}}
+                </div>
+                <!--<div class="info-amount">-->
+                    <!--x{{card_good.amount}}-->
+                <!--</div>-->
+            </div>
+
+            <div class="signup-hline"></div>
+
+            <div class="item-msg">
+                <div class="info-contact">
+                    保险期限
+                </div>
+                <div class="info-contact">
+                    受益人
+                </div>
+            </div>
+            <div class="item-rightMsg">
+                <div class="info-contact">
+                    {{priceInfo.duration.startTime}}  <span>至</span>
+                    <br>
+                    {{priceInfo.duration.endTime}}
+                </div>
+                <div class="info-contact">
+                    法定
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Form -->
+        <!-- 隐藏配送方式等信息  @wuwp 20170609
+    <div class="confirm-form" ng-if="selectedGoods && selectedGoods.length">
+        <div class="form-item" ng-click="touchExpress()">
+            <div class="item-title">
+                配送方式
+            </div>
+            <div class="item-value">
+                {{express ? express.name + '(￥' + express.fee + ')' : '选择配送方式'}}
+            </div>
+            <img class="item-arrow" src="image/nav-right.png"/>
+        </div>
+        <div class="form-item" ng-click="touchInvoice()">
+            <div class="item-title">
+                发票类型
+            </div>
+            <div class="item-value">
+                {{invoiceType ? invoiceType.name : '不开发票'}}
+            </div>
+            <img class="item-arrow" src="image/nav-right.png"/>
+        </div>
+        <div class="form-item" ng-click="touchCashgift()">
+            <div class="item-title">
+                使用红包
+            </div>
+            <div class="item-value">
+                {{cashgift ? '￥' + cashgift.value : '不使用红包'}}
+            </div>
+            <img class="item-arrow" src="image/nav-right.png"/>
+        </div>
+        <div class="form-item">
+            <div class="item-textarea">
+                <textarea type="text" placeholder="买家留言" ng-model="input.comment"  ng-change="refreshComment()"></textarea>
+            </div>
+        </div>
+        <div class="form-item">
+            <div class="item-title">
+                使用积分
+            </div>
+            <div class="item-input">
+                <input type="text" placeholder="填写积分" ng-class="{active: scoreInfo.score > 0}" ng-disabled="!scoreInfo.score" ng-model="input.score" ng-change="refreshScore()"/>
+                <div class="input-tips" ng-if=" maxUseScore > 0">
+                    您当前可用 {{scoreInfo.score}} 积分，本订单最多可以使用{{maxUseScore}}积分，每积分抵扣 {{scoreInfo.rule}} 元
+                </div>
+                <div class="input-tips" ng-if="maxUseScore <= 0">
+                    无可用积分
+                </div>
+            </div>
+        </div>
+    </div>
+         -->
+
+    <!-- Total -->
+    <div class="confirm-summury">
+        <div class="summury-total">
+            保单总额 <span class="total-price"> ￥{{priceInfo.total_price || '0.00'}}</span>
+        </div>
+        <div class="summury-detail">
+            商品总额 <span class="total-price"> ￥{{priceInfo.product_price || '0.00'}}</span>
+        </div>
+        <!--<div class="summury-detail">
+            运费金额 <span class="total-price">+ ￥{{priceInfo.shipping_price || express.fee || '0.00'}}</span>
+        </div>-->
+        <!--<div class="summury-detail" ng-repeat="promo in priceInfo.promos track by $index">-->
+            <!--{{ formatPromo(promo.promo) }} <span class="total-price">- ￥{{promo.price}}</span>-->
+        <!--</div>-->
+    </div>
+
+    <!-- Submit -->
+    <div class="confirm-submit">
+        <div class="submit-total">
+            <div class="total-price">合计： ￥{{priceInfo.total_price || '0.00'}}</div>
+            <div class="total-discount">已优惠： ¥{{all_discount |number:2}}</div>
+        </div>
+        <div class="submit-button dark" ng-class="{active: canPurchase}" ng-click="touchSubmit()">
+            提交订单并支付
+        </div>
+    </div>
+
+
+    <!--  证件类型  -->
+    <div class="address-mask" ng-show="showCardTypePicker" ng-animate="{enter: 'mask-anim-enter', leave: 'mask-anim-leave'}" ng-click="touchCardTypePickerCancel()"></div>
+    <div class="address-picker" ng-show="showCardTypePicker" ng-animate="{enter: 'picker-anim-enter', leave: 'picker-anim-leave'}">
+        <div class="picker-header">
+            {{pickerCardTypeName || '请选择证件类型'}}
+        </div>
+        <div class="picker-list">
+            <div class="list-item" ng-click="touchPickerCardType(1)">
+                身份证
+                <img class="item-arrow" src="image/nav-right.png" />
+            </div>
+        </div>
+        <div class="picker-cancel" ng-click="touchCardTypePickerCancel()">
+            取消
+        </div>
+    </div>
+</div>
+

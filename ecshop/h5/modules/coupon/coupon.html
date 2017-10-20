@@ -1,0 +1,31 @@
+<div class="app-container with-navbar with-tabbar" ng-controller="CouponController">
+
+    <div class="navbar fixed-top">
+        <div class="navbar-left hide-weixin" ng-click="goProfile()">
+            <img class="button-icon" src="image-current/nav-left.png"/>
+            <!--<div class="button-text">返回</div>-->
+        </div>
+        <div class="navbar-title">
+            我的代金券
+        </div>
+        <div class="navbar-right">
+        </div>
+    </div>
+
+    <div class="address-form" >
+        <div class="form-item" >
+            <div class="item-title">
+                代金券卡号
+            </div>
+            <div class="item-input">
+                <input type="text" placeholder="填写代金券卡号" ng-model="card_num"/>
+            </div>
+        </div>
+
+    </div>
+    <div class="changepass-submit" ng-click="recharge()">
+        充值
+    </div>
+
+</div>
+

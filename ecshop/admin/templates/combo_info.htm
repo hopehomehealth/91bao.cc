@@ -1,0 +1,133 @@
+<!-- $Id: brand_info.htm 14216 2008-03-10 02:27:21Z testyang $ -->
+{include file="pageheader.htm"}
+<div class="main-div">
+    <script src="http://libs.baidu.com/jquery/1.11.3/jquery.min.js"></script>
+    <form method="post" action="combo.php" name="theForm" enctype="multipart/form-data" onsubmit="return validate()">
+        <table cellspacing="1" cellpadding="3" width="100%">
+            <tr>
+                <td class="label">商品名字:</td>
+                <td>
+                    <select name="gid" id="">
+                        {foreach from=$goods_list item=good}
+                            {if $good.goods_id eq $combo.gid}
+                                <option selected value="{$good.goods_id}">{$good.goods_name}</option>
+                            {else}
+                                <option value="{$good.goods_id}">{$good.goods_name}</option>
+                            {/if}
+                        {/foreach}
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">商品属性goods_id:</td>
+                <td>
+                    <select name="goods_id" id="">
+                        {foreach from=$goods_list item=good}
+                            {if $good.goods_id eq $combo.goods_id}
+                                <option selected value="{$good.goods_id}">{$good.goods_name}</option>
+                            {else}
+                                <option value="{$good.goods_id}">{$good.goods_name}</option>
+                            {/if}
+                        {/foreach}
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">套餐名字:</td>
+                <td><input type="text" name="combo_name" maxlength="60"
+                           value="{$combo.combo_name}"/>{$lang.require_field}</td>
+            </tr>
+            <tr>
+                <td class="label">套餐价格:</td>
+                <td><input type="text" name="combo_price" maxlength="60" value="{$combo.price}"/></td>
+            </tr>
+
+            <tr>
+                <td class="label">描述内容:</td>
+                <td><textarea name="combo_desc" cols="60" rows="4">{$combo.description}</textarea></td>
+            </tr>
+            <tr>
+                <td class="label">表格内容</td>
+                <td id="content_table">
+
+                </td>
+            </tr>
+
+            {foreach from=$combo.content item=item}
+            <tr>
+                <td class="label">key</td>
+                <td>
+                    <input name="key[]" type="text" value="{$item.key}">
+                    价格:<input name="value[]" type="text" value="{$item.value}">
+                    描述:<input name="desc[]" type="text" value="{$item.description}">
+                    <input type="button" id="add" value="增加">
+                </td>
+            </tr>
+
+            {foreachelse}
+            <tr>
+                <td class="label">保障项目</td>
+                <td>
+                    <input name="key[]" type="text" value="">
+                    价格:<input name="value[]" type="text" value="">
+                    描述:<input name="desc[]" type="text" value="">
+                    <input type="button" class="add" value="增加">
+                </td>
+            </tr>
+            {/foreach}
+
+            <tr>
+                <td class="label">{$lang.sort_order}</td>
+                <td><input type="text" name="sort_order" maxlength="40" size="15" value="{$combo.sort_order}"/></td>
+            </tr>
+            <tr>
+                <td class="label">{$lang.is_show}</td>
+                <td><input type="radio" name="is_show" value="1"
+                           {if $combo.is_show eq 1}checked="checked"{/if} /> {$lang.yes}
+                    <input type="radio" name="is_show" value="0"
+                           {if $combo.is_show eq 0}checked="checked"{/if} /> {$lang.no}
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"><br/>
+                    <input type="submit" class="button" value="{$lang.button_submit}"/>
+                    <input type="reset" class="button" value="{$lang.button_reset}"/>
+                    <input type="hidden" name="act" value="{$form_action}"/>
+                    <input type="hidden" name="old_brandname" value="{$brand.brand_name}"/>
+                    <input type="hidden" name="id" value="{$combo.id}"/>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+{insert_scripts files="../js/utils.js,validator.js"}
+{literal}
+    <script language="JavaScript">
+
+        <!--
+        //document.forms['theForm'].elements['brand_name'].focus();
+        onload = function () {
+            // 开始检查订单
+            startCheckOrder();
+
+        }
+        /**
+         * 检查表单输入的数据
+         */
+        function validate() {
+            validator = new Validator("theForm");
+            validator.required("brand_name", no_brandname);
+            validator.isNumber("sort_order", require_num, true);
+            return validator.passed();
+        }
+        //-->
+    </script>
+    <script>
+        $(function(){
+            $('.add').click(function () {
+               $(this).parent().parent().clone().insertAfter($(this).parent().parent());
+            })
+        })
+    </script>
+{/literal}
+{include file="pagefooter.htm"}

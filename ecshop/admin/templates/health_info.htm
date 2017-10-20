@@ -1,0 +1,89 @@
+<!-- $Id: brand_info.htm 14216 2008-03-10 02:27:21Z testyang $ -->
+{include file="pageheader.htm"}
+<div class="main-div">
+	<form method="post" action="health_notice.php" name="theForm" enctype="multipart/form-data" onsubmit="return validate()">
+		<table cellspacing="1" cellpadding="3" width="100%">
+			<tr>
+				<td class="label">商品名字:</td>
+				<td>
+					<select name="gid" id="">
+                        {foreach from=$goods_list item=good}
+                            {if $good.goods_id eq $combo.goods_id}
+								<option selected value="{$good.goods_id}">{$good.goods_name}</option>
+                            {else}
+								<option value="{$good.goods_id}">{$good.goods_name}</option>
+                            {/if}
+                        {/foreach}
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td class="label">健康告知内容:</td>
+				<td>
+					<textarea type="text" cols="60" rows="5" name="health_key" maxlength="60" >{$combo.jkgz_key}
+					</textarea>
+				</td>
+			</tr>
+			<tr>
+				<td class="label">健康告知描述:</td>
+				<td>
+					<textarea type="text" cols="60" rows="4" name="health_desc" maxlength="60">{$health.jkgz_value}
+					</textarea>
+				</td>
+			</tr>
+
+			</td>
+
+			</tr>
+
+			<tr>
+				<td class="label">{$lang.sort_order}</td>
+				<td><input type="text" name="order" maxlength="40" size="15" value="{$combo.list_order}" /></td>
+			</tr>
+			<tr>
+				<td colspan="2" align="center"><br />
+					<input type="submit" class="button" value="{$lang.button_submit}" />
+					<input type="reset" class="button" value="{$lang.button_reset}" />
+					<input type="hidden" name="act" value="{$form_action}" />
+					<input type="hidden" name="old_brandname" value="{$brand.brand_name}" />
+					<input type="hidden" name="id" value="{$combo.jkgz_id}" />
+				</td>
+			</tr>
+		</table>
+	</form>
+</div>
+{insert_scripts files="../js/utils.js,validator.js"}
+{literal}
+	<script language="JavaScript">
+
+        <!--
+        document.forms['theForm'].elements['brand_name'].focus();
+        onload = function()
+        {
+            // 开始检查订单
+            startCheckOrder();
+
+        }
+        /**
+         * 检查表单输入的数据
+         */
+        function validate()
+        {
+            validator = new Validator("theForm");
+            validator.required("brand_name",  no_brandname);
+            validator.isNumber("sort_order", require_num, true);
+            return validator.passed();
+        }
+        //-->
+	</script>
+	<script>
+        //    window.onload =function () {
+        //        $('#add').click(function () {
+        //            $(this).parents('#content_table').append($(this).parent());
+        //            $(this).hide();
+        //        })
+        //
+        //    }
+	</script>
+{/literal}
+{include file="pagefooter.htm"}

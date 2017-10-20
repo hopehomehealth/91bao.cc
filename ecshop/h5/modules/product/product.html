@@ -1,0 +1,205 @@
+<div class="app-container with-navbar with-tabbar" ng-controller="ProductController">
+
+    <div class="navbar fixed-top">
+        <div class="navbar-left hide-weixin" ng-click="goBack()">
+            <img class="button-icon" src="image-current/nav-left.png"/>
+        </div>
+        <div class="navbar-title">
+            商品详情
+        </div>
+    </div>
+
+    <div class="app-content">
+
+        <!-- Photo -->
+        <div class="product-flash swiper-container" ng-if="isLoaded && product">
+            <div class="swiper-wrapper">
+                <!--<div class="flash-slide swiper-slide" ng-repeat="photo in product.photos track by $index" ng-click="touchPhoto(photo)">-->
+                    <!--<img class="slide-image" ng-src="{{photo.large}}"/>-->
+                <!--</div>-->
+                <img class="slide-image" ng-src="{{product.photos[0].thumb}}"/>
+                <!--  商品标签  -->
+                <img class="img-tip" ng-src="image-current/boutique-pic.png" ng-if="product.is_best">
+                <img class="img-tip" ng-src="image-current/selling-pic.png" ng-if="product.is_hot">
+                <img class="img-tip" ng-src="image-current/new-pic.png" ng-if="product.is_new">
+
+                <div class="flash-slide swiper-slide" ng-if="!product.photos || !product.photos.length">
+                    <img class="slide-image" ng-src="image/default-photo.png"/>
+                </div>
+            </div>
+            <div class="swiper-pagination" ng-if="product.photos && product.photos.length > 1"></div>
+        </div>
+
+        <!-- Info -->
+        <div class="product-info" ng-if="isLoaded && product">
+            <div class="info-name">{{product.name}}</div>
+            <div class="info-tags">
+                <a ng-repeat="tags in product.tags track by $index">{{tags.name}}</a>
+            </div>
+            <div class="info-volume">已经售出{{product.sales_count}}件</div>
+            <div class="info-price">
+                <span class="price-shop" ng-class="{danger: currentStock}">￥{{currentSelectedPrice| number:2}}元</span>起
+                <!--<span class="price-market">￥{{product.price| number:2}}</span>-->
+            </div>
+            <!--
+            <div class="info-favorite" ng-click="touchLike()">
+                <img src="image/favorite-off.png" ng-if="!product.is_liked"/>
+                <img src="image/favorite-on.png" ng-if="product.is_liked"/>
+            </div>
+            -->
+        </div>
+
+        <!-- Attr -->
+        <div class="product-attr" ng-if="isLoaded && product && product.good_stock && ((product.properties && product.properties.length) || (product.combo && product.combo.length))">
+            <!--  出生日期  -->
+            <!--<div class="attr-group" ng-if="product.combo && product.combo.length">-->
+                <!--<div class="group-name">出生日期：</div>-->
+                <!--<br>-->
+                <!--<div class="group-items">-->
+                    <!--<input id="birthday" class="seletor" type="text" name="birthday" value="2000-01-01" readonly>-->
+                <!--</div>-->
+            <!--</div>-->
+            <div class="attr-group" ng-if="product.combo && product.combo.length">
+                <div class="group-name">商品类型：</div>
+                <!--<br>-->
+                <div class="group-items">
+                    <div class="group-item" ng-repeat="combo in product.combo track by $index" ng-class="{active: isComboSelected(combo)}" ng-click="touchCombo(combo)" ng-if="combo.is_show">
+                        {{combo.combo_name}}
+                    </div>
+                </div>
+            </div>
+            <div class="attr-group" ng-repeat="property in product.properties track by $index">
+                <div class="group-name">{{property.name}}：</div>
+                <!--<br>-->
+                <div class="group-items">
+                    <div class="group-item" ng-class="{active: isAttrSelected(value)}" ng-repeat="value in property.attrs track by $index" ng-click="touchAttr(property,value)">
+                        {{value.attr_name}}
+                    </div>
+                </div>
+                <div class="attr-line" ng-if="attr !== product.attrs[product.attrs.length-1]"></div>
+            </div>
+        </div>
+
+        <!--  商品详情  -->
+        <div class="product-combo" ng-if="isLoaded && product && product.combo && product.combo[comboIndex].content && product.good_stock">
+            <div class="comb-group" ><!--ng-repeat="combo in product.combo track by $index"-->
+                <div class="group-label" ng-repeat="content in product.combo[comboIndex].content track by $index">
+                    <div class="group-item">
+                        {{content.key}} {{content.value}}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Amount
+        <div class="product-amount" ng-if="isLoaded && product && product.good_stock">
+            <div class="amount-name">数量</div>
+            <div class="amount-input" ng-class="{active: canPurchase}">
+                <div class="input-button" ng-class="{active: input.currentAmount > 1}" ng-click="touchAmountSub()">
+                    <img src="image/ind-sub.png">
+                </div>
+                <input type="text" class="input-count" ng-class="{active: input.currentAmount > 0}" ng-model="input.currentAmount"  ng-change="refreshAmount()">
+                </input>
+                <div class="input-button" ng-class="{active: input.currentAmount > 0}" ng-click="touchAmountAdd()">
+                    <img src="image/ind-add.png">
+                </div>
+            </div>
+        </div>
+        -->
+        <!-- Comment -->
+        <div class="product-comment">
+            <div class="comment-header"><!-- ng-click="touchComments()"  -->
+                <!--<img class="header-arrow" src="image/nav-right.png"/>-->
+                <div class="header-title">商品评价（{{comments.total}}）</div>
+            </div>
+            <div class="comment-item" ng-repeat="comment in comments track by $index" ng-click="touchComment(comment)"
+                 ng-if="isLoaded && product && comments && comments.length">
+                <div class="item-info">
+                    <span class="user">{{comment.is_anonymous ? '匿名用户' : comment.author.nickname}}</span>
+                    <span class="rate">{{formatGrade(comment.grade)}}</span>
+                    <span class="time">{{comment.created_at | localTime}}</span>
+                </div>
+                <div class="item-body">
+                    {{comment.content}}
+                </div>
+                <div class="comment-line" ng-if="comment !== comments[comments.length]"></div><!-- .length-1 -->
+            </div>
+            <div class="comment-more" ng-if="isLoaded && product && comments && comments.length">
+                <a ng-click="touchComments()">查看更多</a>
+            </div>
+            <div class="comment-more" ng-if="!(isLoaded && product && comments && comments.length)">
+                <span>暂无用户评价</span>
+            </div>
+        </div>
+
+        <!-- Introduction -->
+        <div class="product-intro" ng-if="isLoaded && product">
+            <div class="intro-header">
+                商品介绍
+            </div>
+            <div class="intro-content" ng-bind-html="(product.goods_desc || '没有产品详情') | trustHtml">
+            </div>
+        </div>
+
+        <!-- Submit -->
+        <div class="product-submit fixed-bottom" ng-if="isLoaded && product">
+            <!--  隐藏 商品详情 添加购物车功能 @wuwp 20170609
+            <div class="submit-cart" ng-click="touchCart()">
+                <img class="cart-icon" src="image/ind-cart.png">
+                <div class="cart-badge" ng-if="cartModel.total > 0">
+                    {{cartModel.total}}
+                </div>
+            </div>
+            <div class="submit-button" ng-class="{active: canPurchase}" ng-click="touchAddCart()" ng-if="!product.notice.length">
+                加入购物车
+            </div>
+            -->
+            <!--  根据product.notice 中是否有消息展示不同功能的购买链接 @wuwp 20170606 -->
+            <div class="submit-sales">
+                起价：<span>{{currentSelectedPrice| number:2}}元</span>
+            </div>
+            <div class="submit-button dark" ng-class="{active: canPurchase}" ng-click="touchPurchase()" ng-if="!product.notice.length">
+                立即购买
+            </div>
+            <!--告知-->
+            <div class="submit-button dark" ng-class="{active: canPurchase}"  ng-click="proudtInform()" ng-if="product.notice.length">
+                立即购买
+            </div>
+        </div>
+
+        <!-- Tips -->
+        <div class="product-tips" ng-if="isLoaded && product && !product.good_stock">
+            所选商品暂时无货，非常抱歉！
+        </div>
+
+    </div>
+
+
+    <div class="msgtip-mask" ng-show="msgPicker" ng-animate="{enter: 'mask-anim-enter', leave: 'mask-anim-leave'}" ng-click="msgPickerClose()"></div>
+    <div class="msgtip-picker" ng-show="msgPicker" ng-animate="{enter: 'picker-anim-enter', leave: 'picker-anim-leave'}">
+        <div class="tippick-header">
+            购买须知
+        </div>
+        <div class="tippick-list">
+            <div ng-repeat="notice in  notices">
+                <p>{{ notice.jkgz_key }}</p>
+            </div>
+        </div>
+        <div class="tippick-button">
+            <button type="button" class="btn btn-default" ng-click="msgPickerClose()">
+                取消
+            </button>
+            <button type="button" class="btn btn-primary" ng-click="touchPurchase()" ng-if="!isPushCar">
+                已了解
+            </button>
+            <button type="button" class="btn btn-primary" ng-click="touchAddCart()" ng-if="isPushCar">
+                已了解
+            </button>
+        </div>
+
+    </div>
+
+</div>
+
+

@@ -1,0 +1,58 @@
+<div class="app-container  with-tabbar" ng-controller="CustomerServiceController">
+    <div class="navbar fixed-top">
+        <div class="navbar-left">
+        </div>
+        <div class="navbar-title">
+            客服
+        </div>
+    </div>
+
+
+    <div class="item-group">
+        <div class="cus-list">
+            <img src="image/customer-service-img/customer-service.png">
+            <div class="lab-content">
+                <h4>客服电话</h4>
+                <a>400-800-8088</a>
+            </div>
+            <a href="tel:4008008088"><img src="image/customer-service-img/dial.png"></a>
+        </div>
+        <div class="cus-list">
+            <img src="image/customer-service-img/tencent.png">
+            <div class="lab-content">
+                <h4>QQ官方客服</h4>
+                <a>1737972076</a>
+            </div>
+            <a href="mqqwpa://im/chat?chat_type=wpa&uin=1737972076&version=1&src_type=web&web_src=91bao.cc">
+            <!--<a href="http://crm2.qq.com/page/portalpage/wpa.php?uin=1737972076&f=1&ty=1&ap=000011:400787:|f:KFXD3x">-->
+                <img src="image/customer-service-img/add.png">
+            </a>
+
+        </div>
+        <p>
+            客服服务时间为每天09:30~20:30，客服电话点击即可拨打，
+            添加QQ官方客服需要安装手机QQ
+        </p>
+    </div>
+
+
+    <div class="tabbar fixed-bottom">
+        <div class="tab" ng-click="goHome()">
+            <img class="tab-icon" src="image/tab-imgs/tab-home-normal.png"/>
+            <a>首页</a>
+        </div>
+        <div class="tab" ng-click="goShoppingMall()">
+            <img class="tab-icon" src="image/tab-imgs/tab-category-normal.png"/>
+            <a>商城</a>
+        </div>
+        <div class="tab" ng-click="goCustomerService()">
+            <img class="tab-icon" ng-src="image/tab-imgs/tab-service-active.png">
+            <a class="tab-red">客服</a>
+        </div>
+        <div class="tab active" ng-click="goProfile()">
+            <img class="tab-icon" src="image/tab-imgs/tab-profile-normal.png"/>
+            <a>我的</a>
+        </div>
+    </div>
+
+</div>

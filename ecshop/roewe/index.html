@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="icon" href="resources/icon/anumated_favicon.ico" type="image/gif" >
+    <title>荣威首页</title>
+    <link href="resources/index/index.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+    <div class="form-container">
+        <form id="car-form">
+            <table>
+                <tr>
+                    <td>车主姓名</td>
+                    <td><input type="text" name="name" id="name" placeholder="请填写车主姓名"/></td>
+                    <td>验证码</td>
+                    <td>
+                        <input type="text" name="verification-code" id="verification-code" placeholder="请填写验证码"/>
+                        <input type="button" onclick="getCode();" id="codeBtn" value="点击获取验证码"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>行驶城市</td>
+                    <td><input type="text" name="drive-city" id="drive-city" placeholder="请填写行驶城市"/></td>
+                    <td>车架号</td>
+                    <td><input type="text" name="frame-number" id="frame-number" placeholder="请填写车架号"/></td>
+                </tr>
+                <tr>
+                    <td>车牌号</td>
+                    <td><input type="text" name="car-num" id="car-num" placeholder="请填写车牌号"/></td>
+                    <td>发动机号</td>
+                    <td><input type="text" name="engine-number" id="engine-number" placeholder="请填写发动机号"/></td>
+                </tr>
+                <tr>
+                    <td>新车未上保险</td>
+                    <td class="form-radio">
+                        <input type="radio" name="is-new" value="1"/>是
+                        <input type="radio" name="is-new" value="0" checked/>否
+                    </td>
+                    <td>品牌型号</td>
+                    <td><input type="text" name="car-brand" id="car-brand" placeholder="请填写车牌型号"/></td>
+                </tr>
+                <tr>
+                    <td>身份证号</td>
+                    <td><input type="text" name="card-num" id="card-num" onkeyup="onCardNumChange();" placeholder="请填写身份证号"/></td>
+                    <td>注册登记日期</td>
+                    <td><input type="text" name="record-date" id="record-date" placeholder="请填写注册登记日期"/></td>
+                </tr>
+                <tr>
+                    <td>车主生日</td>
+                    <td><input type="text" name="car-birthday" id="car-birthday" disabled/></td>
+                    <td>上一年是否发生所有权转移</td>
+                    <td class="form-radio">
+                        <input type="radio" name="is-transfer" value="1"/>是
+                        <input type="radio" name="is-transfer" value="0" checked/>否
+                    </td>
+                </tr>
+                <tr>
+                    <td>手机号码</td>
+                    <td><input type="text" name="mobile" id="mobile" placeholder="请填写手机号码"/></td>
+                    <td>贵宾抵扣券</td>
+                    <td class="continue-td">
+                        <input type="text" name="deduction-voucher" id="deduction-voucher" placeholder="请填写贵宾抵扣券"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        <a href="javascript:carSubmit();">继续</a>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
+
+<!-- 消息提示 -->
+<div class="msgTips-container"></div>
+<div id="msgTips" class="dialog-box detele-order">
+    <div class="t"><span class="title">信息提示</span><b title="关闭" class="close" onclick="closeMsg();">x</b></div>
+    <div class="c">
+        <a id="msgLabel"></a>
+        <div>
+            <a id="conformBtn" class="tijiao" href="javascript:closeMsg();" data-id="">确认</a>
+        </div>
+    </div>
+</div>
+
+
+<script src="jquery/jquery.min.js"></script>
+<script src="resources/js/interface.js"></script>
+<script src="resources/index/index.js"></script>
+</body>
+</html>

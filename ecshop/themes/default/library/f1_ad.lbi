@@ -1,0 +1,7 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"> 
+{insert name='ads' id=9 num=1}
+{insert name='ads' id=10 num=1}
+{insert name='ads' id=11 num=1}
+{insert name='ads' id=12 num=1}
+<div class="left-logo-link" id="taipingyang-link"></div>
+<!--<img class="left-logo" src="/html/logo/taipingyang.png" alt="太平洋LOGO" />-->

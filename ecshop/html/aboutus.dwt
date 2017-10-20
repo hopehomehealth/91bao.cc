@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="Keywords" content="{$keywords}" />
+<meta name="Description" content="{$description}" />
+<!-- TemplateBeginEditable name="doctitle" -->
+<title>{$page_title}</title>
+<!-- TemplateEndEditable --><!-- TemplateBeginEditable name="head" --><!-- TemplateEndEditable -->
+<!--   <link rel="shortcut icon" href="favicon.ico" /> 修改图标@wuwp 20170519  -->
+<link rel="icon" href="animated_favicon_new.ico"/>
+<!--  <link rel="icon" href="animated_favicon.gif" type="image/gif" />修改图标@wuwp 20170519  -->
+<link href="{$ecs_css_path}" rel="stylesheet" type="text/css" />
+<link rel="alternate" type="application/rss+xml" title="RSS|{$page_title}" href="{$feed_url}" />
+<link rel="stylesheet" type="text/css" href="themes/default/images/swiper.min.css">
+<!--  添加jquery @wuwp 20170524  -->
+<script src='js/jquery-3.1.1.js'></script>
+<script language='javascript' src='themes/default/js/swiper.min.js' type='text/javascript' charset='utf-8'></script>
+{* 包含脚本文件 *}
+{insert_scripts files='common.js,index.js'}
+</head>
+<body>
+!-- #BeginLibraryItem "/library/page_header.lbi" --><!-- #EndLibraryItem -->
+<script>
+if (Object.prototype.toJSONString){
+      var oldToJSONString = Object.toJSONString;
+      Object.prototype.toJSONString = function(){
+        if (arguments.length > 0){
+          return false;
+        }else{
+          return oldToJSONString.apply(this, arguments);
+        }
+}}</script>
+
+
+
+
+
+<!-- #BeginLibraryItem "/library/page_footer.lbi" --><!-- #EndLibraryItem -->
+<!--  添加动画 效果 @wuwp 20170524  -->
+<script src="themes/default/js/ul-animate.js"></script>
+</body>
+</html>

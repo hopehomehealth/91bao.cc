@@ -1,0 +1,112 @@
+.healthy-box span{
+    text-align: left;
+    display: inline-block;
+    height: 40px;
+    line-height: 40px;
+    font-weight: bold;
+    font-size: 16px;
+}
+.healthy-box>span::before{
+    content: "";
+    display: inline-block;
+    width: 5px;
+    height: 18px;
+    margin-right: 15px;
+    background-color: #d23030;
+    position: relative;
+    bottom: -3px;
+}
+.healthy-box i{
+    display: inline-block;
+    width: 6px;
+    height: 20px;
+    background-color:#d23030 ;
+}
+
+.healthy-box .pay-box{
+    border: 1px solid #ccc;
+    padding: 30px 40px;
+}
+
+.healthy-box .pay-box p.money{
+    font-size: 16px;
+}
+
+.healthy-box .pay-box p span{
+    color: #d23030;
+}
+
+.healthy-box .pay-box p.desc{
+    font-size: 14px;
+    color: #999;
+    padding-bottom: 30px;
+    border-bottom: 1px solid #CCCCCC;
+}
+.healthy-box .pay-box .pay-container{
+    width: 100%;
+    display: inline-block;
+}
+.healthy-box .pay-box #balance-pic{
+    width: 169px;
+    height: 60px;
+    margin: 15px 30px 20px 0;
+    cursor: pointer;
+    background: url(/html/imgs/balance-pic.png);
+    float: left;
+}
+.healthy-box .pay-box #balance-pic.current{
+    background: url(/html/imgs/balance-picH.png);
+}
+.healthy-box .pay-box #alipay-pic{
+    width: 169px;
+    height: 60px;
+    margin: 15px 30px 20px 0;
+    cursor: pointer;
+    background: url(/html/imgs/alipay-pic.png);
+    float: left;
+}
+.healthy-box .pay-box #alipay-pic.current{
+    background: url(/html/imgs/alipay-picH.png);
+}
+
+.healthy-box .pay-box .bt{
+    width: 195px;
+    height: 47px;
+    cursor: pointer;
+    margin: 30px 48px 0;
+    font-size: 20px;
+    color: #f58c0f;
+    background-color: #ffffff;
+    border: 1px solid #f58c0f;
+}
+
+.healthy-box .pay-box .bt:hover{
+    background-color: #f58c0f;
+    color: #fff;
+    border: none;
+}
+
+.healthy-box .pay-box .select-box{
+    text-align: center;
+}
+/*产品名称*/
+.healthy-box .pay-box .title-box{
+    border-bottom: 1px solid #CCCCCC;
+    height: 45px;
+    line-height: 45px;
+}
+.healthy-box .pay-box .title-box .pull-left h2 span{
+    font-size: 20px;
+}
+.healthy-box .pay-box .title-box .pull-right h4{
+    font-size: 14px;
+    color: #999999;
+}
+.healthy-box .pay-box .title-box .pull-right h4 span{
+    font-size: 20px;
+    color: #d23030;
+
+}
+.healthy-box .pay-box>p{
+    margin-top: 20px;
+}

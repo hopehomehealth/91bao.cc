@@ -1,0 +1,42 @@
+<div class="app-container with-navbar with-tabbar" ng-controller="ProductInformController">
+
+    <div class="navbar fixed-top">
+        <div class="navbar-left hide-weixin" ng-click="goBack()">
+            <img class="button-icon" src="image-current/nav-left.png"/>
+            <!--<div class="button-text">返回</div>-->
+        </div>
+        <div class="navbar-title">
+            告知
+        </div>
+        <div class="navbar-right">
+        </div>
+    </div>
+
+    <div class="app-content maBottom50">
+        <!-- Address -->
+        <div class="info-list" ng-if="notices!=null && notices.length">
+            <div class="list-item" ng-repeat="notice in  notices">
+                <!--<div class="item-checkbox"></div>-->
+                <div class="item-info">
+                    <div class="info-contact">
+                        {{ notice.jkgz_key }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="inform-statement">
+            若有以下部分情况，则不满足投保条件，
+            请点击“有部分情况”返回商品详情页
+        </div>
+        <div class="inform-bar fixed-bottom">
+            <div class="bar-inform" ng-click="goBack()">
+                有部分情况
+            </div>
+            <div class="bar-inform" ng-click="confirmInform()">
+                没问题
+            </div>
+        </div>
+    </div>
+
+</div>
+

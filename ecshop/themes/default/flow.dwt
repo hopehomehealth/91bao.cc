@@ -1,0 +1,1271 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="Keywords" content="{$keywords}" />
+<meta name="Description" content="{$description}" />
+<!-- TemplateBeginEditable name="doctitle" -->
+<title>{$page_title}</title>
+<!-- TemplateEndEditable --><!-- TemplateBeginEditable name="head" --><!-- TemplateEndEditable -->
+<link rel="shortcut icon" href="favicon.ico" />
+<link rel="icon" href="animated_favicon.gif" type="image/gif" />
+<link href="{$ecs_css_path}" rel="stylesheet" type="text/css" />
+{* 包含脚本文件 *}
+{insert_scripts files='common.js,shopping_flow.js'}
+<style>
+        .healthy-box .txbd-ordinary{
+            font-size:16px;
+            margin-top:20px;
+            width:980px;
+            margin:20px auto;
+            overflow:hidden;
+            padding:20px;
+            border:1px solid #cccccc;
+        }
+        .healthy-box .txbd-ordinary table{
+            width:914px;
+            border-collapse:collapse;
+            margin:-1px;
+        }
+        .healthy-box .txbd-ordinary table thead tr td{
+            border-bottom: 1px dashed #cccccc;
+        }
+        .healthy-box .txbd-ordinary table tr td{
+            height:43px;
+            text-align:center;
+            padding: 5px 8px;
+            border-left: 1px dashed #cccccc;
+
+        }
+        /*遮罩层*/
+        .msgTips-container{
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background-color: #000000;
+            opacity:0.3;
+            filter:alpha(opacity=30);
+            overflow: hidden;
+            display: none;
+        }
+        .dialog-box {
+            width: 760px;
+            height: 350px;
+            position: fixed;
+            top: 30%;
+            left: 27%;
+            display: none;
+            font-size: 14px;
+            color: #50504D;
+            border: 1px solid #CCC;
+            box-shadow: 0 0 8px #CCC;
+            background: #FFF;
+            border-radius: 5px;
+            overflow: hidden;
+            z-index: 901;
+        }
+        .dialog-box .t {
+            position: relative;
+            width: 100%;
+            height: 43px;
+            line-height: 45px;
+            text-indent: 20px;
+            color: #fff;
+            overflow: hidden;
+            font-size: 16px;
+            font-family: "黑体";
+            background-color: #d23030;
+            text-align: center;
+        }
+        .dialog-box .t b {
+            position: absolute;
+            right: 10px;
+            top: -2px;
+            width: 40px;
+            height: 90%;
+            cursor: pointer;
+            font-size: 34px;
+            font-family: arial;
+            font-weight: 400;
+        }
+        .dialog-box .c {
+            width: 90%;
+            padding: 60px 10px 0;
+        }
+        .dialog-box .c p{
+            text-align: center;
+            height: 40px;
+            line-height: 40px;
+            font-size: 30px;
+        }
+        .dialog-box .c #msgBtn{
+            text-align: center;
+            margin-top: 50px;
+        }
+        .dialog-box .tijiao {
+            width: 250px;
+            height: 44px;
+            line-height: 44px;
+            text-align: center;
+            background-color: #d23030;
+            font-family: "微软雅黑";
+            display: inline-block;
+            position: relative;
+            left: 15px;
+            font-size: 16px;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 2px;
+            cursor: pointer;
+        }
+</style>
+</head>
+<body>
+<!-- #BeginLibraryItem "/library/page_header.lbi" --><!-- #EndLibraryItem -->
+<!--当前位置 start-->
+<div class="block box">
+ <div id="ur_here">
+  <!-- #BeginLibraryItem "/library/ur_here.lbi" --><!-- #EndLibraryItem -->
+ </div>
+</div>
+<!--当前位置 end-->
+<div class="blank"></div>
+<div class="block healthy-box" style="text-align:center;">
+  <!-- {if $step eq "cart"} -->
+    <div style="font-size:16px;height:300px;vertical-align:middle;">欢迎购物
+        <a href="/index.php" style="height:200px;line-height:200px;"><span style="color:#94b63d;">返回首页</span></a>
+    </div>
+  <!-- {/if} -->
+
+  <!-- {if $favourable_list} 优惠活动 -->
+  <div class="block">
+    <div class="flowBox">
+    <h6><span>{$lang.label_favourable}</span></h6>
+        <!-- {foreach from=$favourable_list item=favourable} -->
+        <form action="flow.php" method="post">
+          <table width="99%" align="center" border="0" cellpadding="5" cellspacing="1" bgcolor="#dddddd">
+            <tr>
+              <td align="right" bgcolor="#ffffff">{$lang.favourable_name}</td>
+              <td bgcolor="#ffffff"><strong>{$favourable.act_name}</strong></td>
+            </tr>
+            <tr>
+              <td align="right" bgcolor="#ffffff">{$lang.favourable_period}</td>
+              <td bgcolor="#ffffff">{$favourable.start_time} --- {$favourable.end_time}</td>
+            </tr>
+            <tr>
+              <td align="right" bgcolor="#ffffff">{$lang.favourable_range}</td>
+              <td bgcolor="#ffffff">{$lang.far_ext[$favourable.act_range]}<br />
+              {$favourable.act_range_desc}</td>
+            </tr>
+            <tr>
+              <td align="right" bgcolor="#ffffff">{$lang.favourable_amount}</td>
+              <td bgcolor="#ffffff">{$favourable.formated_min_amount} --- {$favourable.formated_max_amount}</td>
+            </tr>
+            <tr>
+              <td align="right" bgcolor="#ffffff">{$lang.favourable_type}</td>
+              <td bgcolor="#ffffff">
+                <span class="STYLE1">{$favourable.act_type_desc}</span>
+                <!-- {if $favourable.act_type eq 0} -->
+                <!-- {foreach from=$favourable.gift item=gift} --><br />
+                  <input type="checkbox" value="{$gift.id}" name="gift[]" />
+                  <a href="goods.php?id={$gift.id}" target="_blank" class="f6">{$gift.name}</a> [{$gift.formated_price}]
+                <!-- {/foreach} -->
+              <!-- {/if} -->          </td>
+            </tr>
+            <!-- {if $favourable.available} -->
+            <tr>
+              <td align="right" bgcolor="#ffffff">&nbsp;</td>
+              <td align="center" bgcolor="#ffffff"><input type="image" src="images/bnt_cat.gif" alt="Add to cart"  border="0" /></td>
+            </tr>
+            <!-- {/if} -->
+          </table>
+          <input type="hidden" name="act_id" value="{$favourable.act_id}" />
+          <input type="hidden" name="step" value="add_favourable" />
+        </form>
+        <!-- {/foreach} 循环赠品活动结束 -->
+  </div>
+  </div>
+  <!-- {/if} -->
+
+
+  <!-- 开始告知 -->
+        <!-- {if $step eq "notify"} -->
+		<h2 class="title"></h2>
+        <img src="images/step_1.png" class="roll">
+        <h3 class="healthy-notice" style="text-align:left;">健康告知</h3>
+        <div class="healthy-con">
+		<!--<img src="images/jkgz.png" class="roll">-->
+		<input type="hidden" id="jkgz_num" value="{$goods_jkgz_num}"/>
+		{foreach from=$goods_jkgz item=item key=key}
+		{if $item.jkgz_key neq ""}
+		<p>
+		{$item.jkgz_key}
+		<input  type="radio"  name="{$key}"  style="width:20px;height:20px;line-height:20px;" value="0"/>是
+		<input  type="radio" checked="checked" name="{$key}" style="width:20px;height:20px;line-height:20px;" value="1"/>否
+		</p>
+		{/if}
+		{/foreach}
+        <div>
+	        <br />
+        </div>
+        </div>
+        <div class="healthDiv">
+  		<input type="hidden" id="goods_id" value="{$goods_id}"/>
+  		{$res.notify_detail}
+
+		<a href="javascript:window.history.go(-1)" style="display:block;width:60px;height:30px;line-height:30px;border:1px solid #ff9600;padding:0 5px;margin-left:500px;">有部分情况</a>
+		<a href="javascript:toFillPolicy()" style="display:block;width:60px;height:30px;line-height:30px;border:1px solid #ff9600;padding:0 5px;margin-left:600px;margin-top:-32px;">没有问题</a>
+
+  <!-- {/if} -->
+        </div>
+
+
+  <!-- 结束告知 -->
+
+
+  <!-- 开始问题 -->
+  <!-- {if $step eq "problem"} -->
+  <div class="healthy-box">
+		<h2 class="title"></h2>
+        <img src="" class="roll"><!-- images/roll01.jpg -->
+        <h3 class="healthy-notice" style="text-align:left;margin-left:350px;border:none;">出现问题</h3>
+  		<div style="width:848px;height:300px;border:1px solid #ccc;margin-left:350px;line-height:100px;"><!-- line-height:300px  -->
+  		<br><p style="text-align:center;">{$errormsg}</p>
+        <a href="javascript:goIndex();" style="color: #FFFFFF;font-size: 18px;background-color: #e70012;padding: 5px 30px;margin-left:360px;border-radius: 2px;">
+        返回首页</a>
+  		<!--<a href="javascript:goIndex();">回到首页</a>-->
+  		<div>
+  	</div>
+
+  <!-- {/if} -->
+  <!-- 结束问题 -->
+
+
+  <!-- 开始填写保单-->
+  <!-- {if $step eq "fill_policy"} -->
+  		{if $car_policy eq "false"}
+        <div class="healthy-box">
+		{*<h2 class="title"></h2>*}
+
+        <div class="txbd-ordinary">
+            <div class="head-notice">
+                <p>保险该怎么买?我需要准备什么材料?你还在为此发愁吗? 不不必担心,因为</p>
+                <h1>仅需4步,就可完成对您和家人的保护</h1>
+            </div>
+            <div class="step">
+                <img src="images/step_2.png" alt="" class="roll" >
+            </div>
+  		<form name="theForm" id="theForm" >
+  	  <h2  style="/*width: 914px;*/ font: bold 18px 'Microsoft YaHei'; margin: 40px 0 12px 30px;display:inline-block;">被保人</h2>
+  	  {if $relation eq 0}
+  	  <span style="color:red;font-size:18px;">(仅限本人投保)</span>
+  	  {/if}
+      <div class="user-list clearfix">
+          <div style="background-color: #f3f3f3">
+              <em>从常用人中选择：</em>
+              <ul class="clearfix">
+                  {foreach from=$consignee_list item=item key=key}
+                      <li class="insured" data-username="{$item.consignee}" data-card-type="{$item.card_type}" data-card-num="{$item.card_num}" data-birth-date="{$item.birthdate}" data-tel="{$item.tel}" data-sex="{$item.sex}">{$item.consignee}</li>
+                  {/foreach}
+              </ul>
+              <input id="relation" value="{$relation}" style="visibility:hidden;">
+              <div style="clear: both;"></div>
+          </div>
+
+          <table>
+              <thead>
+              <tr>
+                  <td>姓名</td>
+                  <td>证件类型</td>
+                  <td>证件号码</td>
+                  <td>出生日期</td>
+                  <td>手机号码</td>
+                  <td>性别</td>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                  <td><input type="text" style="width: 100px"  name="recognizee_name " id="recognizee_name" value="" placeholder="请填写姓名"></td>
+                  <td><select name="recognizee_cardtype" id="recognizee_cardtype">
+                          <option value="1">身份证</option>
+                      </select>
+                  </td>
+                  <td><input type="text" style="width: 200px" name="recognizee_cardnum" id="recognizee_cardnum" value="" placeholder="请填写证件号" onkeyup="onCardNumChange('recognizee');"></td>
+                  <td><input type="text" style="width: 140px" name="recognizee_birth" id="recognizee_birth" value="" disabled></td>
+                  <td><input type="text" style="width: 125px" name="recognizee_phone" id="recognizee_phone" value=""></td>
+                  <td><select name="recognizee_sex" id="recognizee_sex">
+                          <option value="1">男</option>
+                          <option value="0" selected>女</option>
+                      </select>
+                  </td>
+              </tr>
+              </tbody>
+          </table>
+      </div>
+
+
+    <!-- 投保人人信息 -->
+    <div class="policy_info {if $relation eq 0}hidden{/if}">
+    {if $relation eq 1}
+  		 <h2 style="margin: 0 auto; width: 914px; padding: 7px 10px;
+  		 display: block;font: bold 18px 'Microsoft YaHei';
+  		 height:40xp;line-height:40px;">
+  		 投保人信息</h2>
+  		 <!--<input type="checkbox" id="isHolderSelf" style="margin-left:25px;"/><span style="color:red;">(本人)</span>-->
+     {/if}
+     <div class="user-list clearfix">
+        <div style="background-color:#f3f3f3;height:40px;">
+        <em>从常用人中选择：</em>
+  		<ul class="clearfix">
+  			{foreach from=$consignee_list item=item key=key}
+         	 <li class="holder" data-username="{$item.consignee}" data-card-type="{$item.card_type}" data-card-num="{$item.card_num}" data-birth-date="{$item.birthdate}" data-tel="{$item.tel}" data-sex="{$item.sex}">{$item.consignee}</li>
+        {/foreach}
+  		</ul>
+        </div>
+        <table>
+            <thead>
+            <tr>
+                <td>姓名</td>
+                <td>证件类型</td>
+                <td>证件号码</td>
+                <td>出生日期</td>
+                <td>手机号码</td>
+                <td>性别</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td><input type="text" style="width: 100px"  name="policy_name " id="policy_name" value="" placeholder="请填写姓名"></td>
+                <td><select name="policy_cardtype" id="policy_cardtype">
+                        <option value="1">身份证</option>
+                    </select></td>
+                <td><input type="text" style="width: 194px" name="policy_cardnum " id="policy_cardnum" value="" placeholder="请填写证件号" onkeyup="onCardNumChange('policy');"></td>
+                <td><input type="text" style="width: 140px" name="policy_birth " id="policy_birth" value="" disabled></td>
+                <td><input type="text" style="width: 125px" name="policy_phone" id="policy_phone" value=""></td>
+                <td><select name="policy_sex" id="policy_sex">
+                        <option value="1">男</option>
+                        <option value="0" selected>女</option>
+                    </select></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    </div>
+
+  		<!--   <a style="margin-left:300px;" class="bnt_blue_2" href="javascript:checkFillPolicy()">继续</a>  更换标签 @wuwp 20170529 -->
+  		<a class="bnt_blue_2" href="javascript:checkFillPolicy()">下一步</a>
+  		</form>
+		</div>
+		</div>
+		<!-- zp修改车险 -->
+		{else}
+        <style>
+            .healthy-box .txbd input#recognizee_phone_check{
+                width:120px;
+            }
+            .healthy-box .txbd form{
+                border: 1px solid #cccccc;
+                margin: 0 auto;
+                width: 1200px;
+            }
+            .healthy-box .txbd form table{
+                margin:0 auto 50px;
+                width:680px;
+            }
+            .healthy-box .txbd form table tr{
+                height:45px;
+            }
+            .healthy-box .txbd form table tr:last-child{
+                height: 90px;
+                vertical-align: bottom;
+            }
+            .healthy-box .txbd form table td label{
+                text-align:right;
+            }
+            .healthy-box .txbd form table td label.is-new{
+                /*margin-left:-30px; 新车未上险checkbox*/
+                display: contents;
+            }
+            .healthy-box .txbd form table td input{
+                width:220px;
+                height:30px;
+            }
+            .healthy-box .txbd form table td.right-radio{text-align:right;}
+            .healthy-box .txbd form table td a.bnt_blue_2{
+                margin:30px auto;
+            }
+            .healthy-box .txbd form .txbd-adPic{
+                height:80px;
+                width:780px;
+                margin:60px auto;
+                background-color: #e0f8ff;
+                border-radius:10px;
+            }
+            .healthy-box .txbd form .txbd-step{
+                height:80px;
+                width:780px;
+                margin:0 auto;
+            }
+            .healthy-box .txbd form .txbd-adPic p:first-child{
+                font-size:14px;
+                color:#999999;
+                height:40px;
+                line-height:40px;
+                text-align:center;
+            }
+            .healthy-box .txbd form .txbd-adPic p:last-child{
+                font-size:20px;
+                font-weight:bold;
+                height:30px;
+                line-height:30px;
+                text-align:center;
+            }
+
+        </style>
+		<div class="healthy-box">
+		<h2 class="title"></h2>
+		<div class="txbd" style="font-size:16px;overflow:hidden;padding-bottom:50px;">
+  		<form action="" method="post" name="carinsure" id="carinsure" onsubmit="return checkFillPolicy(this)">
+<!--
+		<p><label>行驶城市：</label><input type="text" id="drive_city" value="">  <span style="color:red;">车辆所在车市</span></p>
+		<p><label>车牌号：</label><input type="text" id="car_num" value="">  <span style="color:red;">请填写车牌号</span></p>
+		<p style="position:relative;height:46px;line-height:46px;"><label>新车未上保险：</label><input name="has_num" style="width:20px;height:20px;position:absolute;top:9px;" type="checkbox" value></p>
+		<p><label>身份证号：</label><input type="text" id="recognizee_cardnum" value="">  <span style="color:red;">如：3254XXXXXX</span></p>
+		<p><label>车主生日：</label><input type="text" id="recognizee_brithday" value="">  <span style="color:red;">如生日2月12日填写0212（四位）</span></p>
+		<p><label>手机号码：</label><input type="text" id="recognizee_phone" value="">  <span style="color:red;">车主手机号</span></p>
+		<p><label>验证码：</label><input type="text" id="recognizee_phone_check" value="">&nbsp&nbsp
+		    <input id="get_sms" type="button" style="text-align:center;width:80px;height:30px;line-height:30px;background:#94b63d;color:#fff;cursor:pointer;margin:5px;padding-left:6px;" class="inputBg" onclick="send_sms_car()" value="获取验证码" />
+		    <span style="color:#FF0000;" id="sms_tip"></span>
+		<p><label>车架号：</label><input type="text" id="frame_number" value="">  <span style="color:red;">如：SN-XXXX</span></p>
+		<p><label>发动机号：</label><input type="text" id="engine_number" value="">  <span style="color:red;">如：EGN-XXXXXX</span></p>
+		<p><label>品牌型号：</label><input type="text" id="car_brand" value="">  <span style="color:red;">如：雷克XX</span></p>
+		<p><label>注册登记日期：</label><input type="text" id="record_date" value="">  <span style="color:red;">如：2017-05-29</span></p>
+		<p><label>上一年是否发生所有权转移: </label>
+		<input type="radio" checked="checked" name="is_transfer" style="width:20px;height:20px;line-height:20px;" value="1"/>是
+		<input type="radio" name="is_transfer" style="width:20px;height:20px;line-height:20px;" value="0" />否</p>
+		<a style="margin-left:300px;padding:5px 15px;" class="bnt_blue_2" href="javascript:checkCarFillPolicy()">继续</a>
+-->
+        <div class="txbd-adPic">
+            <p>车险应该怎么买？哪类险种是我需要的？您还在卖车险的道路上懵懵懂懂，一知半解？</p>
+            <p>其实，买车险很简单，现在91保就为您解答</p>
+        </div>
+        <!--<div class="txbd-step"></div>-->
+        <table>
+            <tr>
+                <td><label>行驶城市</label></td>
+                <td><input type="text" id="drive_city" value="" placeholder="请填写行驶城市"></td>
+                <td><label>车架号</label></td>
+                <td><input type="text" id="frame_number" value="" placeholder="请填写车架号"></td>
+            </tr>
+            <tr>
+                <td><label>车牌号</label></td>
+                <td><input type="text" id="car_num" value="" placeholder="请填写车牌号"></td>
+                <td><label>发动机号</label></td>
+                <td><input type="text" id="engine_number" value="" placeholder="请填写发动机号"></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <input name="has_num" style="width:20px;height:35px;line-height:35px;float:left;" type="checkbox" value>
+                    <label class="is-new" style="height:40px;line-height:40px;display:inline-block;">新车未上保险</label>
+                </td>
+                <td><label>品牌型号</label></td>
+                <td><input type="text" id="car_brand" value="" placeholder="请填写车辆品牌型号"></td>
+            </tr>
+            <tr>
+                <td><label>身份证号</label></td>
+                <td><input type="text" id="recognizee_cardnum" value="" placeholder="请填写身份证号"></td>
+                <td><label>注册登记日期</label></td>
+                <td><input type="text" id="record_date" value="" placeholder="请填写注册登记日期-2017-01-01"></td>
+            </tr>
+            <tr>
+                <td><label>车主生日</label></td>
+                <td><input type="text" id="recognizee_brithday" value="" placeholder="请填写生日-0101"></td>
+                <td colspan="2" class="right-radio">
+                    <label>上一年是否发生所有权转移 </label>
+                    <input type="radio" checked="checked" name="is_transfer" style="width:20px;height:20px;line-height:20px;" value="1"/>是
+                	<input type="radio" name="is_transfer" style="width:20px;height:20px;line-height:20px;" value="0" />否</p>
+                </td>
+            </tr>
+            <tr>
+                <td><label>手机号码</label></td>
+                <td><input type="text" id="recognizee_phone" value="" placeholder="请填写手机号码"></td>
+                <td><label>验证码</label></td>
+                <td><input type="text" id="recognizee_phone_check" value="">&nbsp&nbsp
+                <input id="get_sms" type="button" style="
+                text-align:center;
+                width:85px;height:38px;line-height:38px;
+                background:-webkit-gradient(linear,left top,left bottom, from(#fefefe), to(#ededed));
+                cursor:pointer;
+                margin:5px;padding-left:6px;" class="inputBg" onclick="send_sms_car()" value="获取验证" />
+                <span style="width:100%;color:red;display:block;" id="sms_tip"></span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                <!--style="margin-left: 300px;padding: 10px 80px;height: 60px;line-height: 60px;letter-spacing: 10px;font-size: 20px;box-shadow: 1px 5px 1px #970c0c;" -->
+                    <a class="bnt_blue_2" href="javascript:checkCarFillPolicy()">继续</a>
+                </td>
+            </tr>
+        </table>
+
+		</form>
+		</div>
+		</div>
+		{/if}
+  <!-- {/if} -->
+  <!-- 结束填写保单 -->
+
+  <!-- 开始验证表单-->
+  <!-- {if $step eq "verify_policy"} -->
+
+		<div class="list01 bor02 pd38" >
+        <!--<p class="jwx_zhifutishi"><b></b>请于2017年05月26日24时前完成支付，否则订单将取消</p>-->
+        <h2 class="h03">
+            <p>请仔细核验您所填的信息，以免造成不必要的损失</p>
+            <p>请核对您所填写的信息<p>
+        </h2>
+        <div class="healthy-box">
+		    <h2 class="title"></h2>
+            <img src="images/step_3.png" class="roll">
+		</div>
+	<div class="ul03-container">
+	    <h3 class="h04">保单详情</h3>
+    	<ul class="ul03">
+    	    <div class="ul03-left">
+                <li>保险名称：{$good.goods_name}</li>
+                <li>年&emsp;&emsp;龄：{$all_information.recognizee_age}周岁</li>
+                <li>保险期限：{$start_time} ~ {$end_time} </li>
+                <!--<li>观&ensp;察&ensp;期：180天（续保无观察期）</li>-->
+                <li>价&emsp;&emsp;格：<span class="picFrom">{$policy_money}</span>元人民币</li>
+            </div>
+            <div class="ul03-right">
+                <li>保单信息：
+                <ul>
+                {foreach from=$recognizee_message item=item}
+                	<li>{$item.key}:{$item.value}</li>
+                {/foreach}
+                </ul>
+                </li>
+            </div>
+        </ul>
+    </div>
+    <div class="ul03-container">
+        <h3 class="h04">投保人信息</h3>
+        <ul class="ul03">
+          <div class="ul03-left">
+        	<li>姓&emsp;&emsp;名：{$all_information.policy_name}</li>
+            <li>性&emsp;&emsp;别：{$all_information.policy_sex}</li>
+            <li>证件号码：身份证--{$all_information.policy_cardnum}</li>
+          </div>
+          <div class="ul03-right">
+            <li>出生日期：{$all_information.policy_birth}</li>
+            <li>手机号码：{$all_information.policy_phone}</li>
+          </div>
+        </ul>
+    </div>
+    <div class="ul03-container">
+        <h3 class="h04">被保险人信息</h3>
+        <!--1表示支持多被保人  0 不支持-->
+        <ul class="ul03">
+            <div class="ul03-left">
+                <li>与投保人关系：{$all_information.recognizee_relation}</li>
+                <li>姓&emsp;&emsp;名：{$all_information.recognizee_name}</li>
+                <li>性&emsp;&emsp;别：{$all_information.recognizee_sex}</li>
+            </div>
+            <div class="ul03-right">
+                <li>证件号码：身份证--{$all_information.recognizee_cardnum}</li>
+                <li>出生日期：{$all_information.recognizee_birth}</li>
+                <li>手机号码：{$all_information.recognizee_phone}</li>
+            </div>
+         </ul>
+    </div>
+    <div class="ul03-container">
+        <!--续缴银行信息-->
+        <h3 class="h04">受益人信息</h3>
+        <ul class="ul03">
+        	<li class="poscurrent" id="poscurrent">受&ensp;益&ensp;人：<em>法定</em><a href="#" class="returnUpdata"></a></li>
+        </ul>
+    </div>
+
+        <!--积分-->
+        <!--
+            <div class="integralBox clearfix" id="integralBox">
+                <span class="check "><i></i>使用积分</span>
+                <span class="note">本单可用积分<em id="totalIntegral" data-total="20"></em>，可抵<em id="priceIntegral"></em>元(5元以上保险可使用，每500积分抵1元，可抵扣部分为实付款的10%)</span>
+            </div>
+        -->
+    <div class="ul03-container">
+        <h3 class="h04">支付金额</h3>
+        <div class="total">
+            <p>保险金额：<span class="wprice"><span>￥</span><em id="price" data-type="35">{$policy_money}</em></span></p>
+            <!--
+            <p>优&emsp;&emsp;惠：<span class="wprice"><span class="dor">￥</span><em id="salem" data-type="0" class="coupon-price">0.00</em></span></p>
+            <p id="payIntegral" class="hidden">积&emsp;&emsp;分：<span class="wprice"><span class="dor">￥</span><em id="salei">0.00</em></span></p>            <p>------------------------------</p>
+            -->
+            <p>合&emsp;&emsp;计：<span class="wprice"><span>￥</span><em id="total">{$policy_money}</em></span></p>
+        </div>
+    </div>
+<!--
+        <div class="explain">
+            <h4>投保申明：</h4>
+            <div class="statementCon" id="statementCon" data-height="78">
+                <ul class="con">
+                    1、本投保人已阅读该产品详细条款，并特别就条款中有关责任免除和投保人、被保险人义务的内容进行阅读。本投保人特此同意接受条款全部内容。<br />
+					2、本产品无犹豫期。投保后无法撤销，退保会造成损失、请慎重退保<br />
+					3、按照最大诚信原则，投保人填写或告知的各项内容均属实，如有隐瞒或告知不实，天安财产保险有权解除保险合同，对于合同解除前发生的任何保险事故，天安财产保险可不承担责任。<br />
+	                <div><br /></div>
+                </ul>
+            </div>
+            <a href="javascript:;" class="selectCon" id="selectCon" data-toggle="0">查看全部>></a>
+        </div>
+        <p class="jwx_zhifutishi jwx_zhifutishi2"><b></b>请于2017年05月26日24时前完成支付，否则订单将取消</p>
+-->
+        <div class="payment-ordinary">
+            <a href="javascript:toDone();" id="subBtn">立即付款</a>
+            <em>我已阅读并同意以上投保申明</em>
+            <span id="agree" class="active"></span>
+         </div>
+    </div>
+</div>
+  <!-- {/if} -->
+  <!-- 结束验证表单 -->
+
+  <!-- 车险确认页面开始 -->
+  <!-- {if $step eq "pay_car_policy"} -->
+		<div class="list01 bor02 pd38" >
+        <h2 class="h03">
+            <p>离保护您的爱车只差一步之遥，请仔细核验您所填的信息，以免造成不必要的损失</p>
+            <p>保险名称：{$good.goods_name}<p>
+        </h2>
+    	<ul class="ul02">
+    	    <div class="ul02-part">
+                <li>行使城市：</li>
+				<li>车 架 号：</li>
+                <li>车 牌 号：</li>
+                <li>发动机号：</li>
+				<li>新车未上保险：</li>
+                <li>品牌型号：</li>
+            </div>
+            <div class="ul02-part">
+                <li>{$all_information.drive_city}</li>
+                <li>{$all_information.frame_number}</li>
+                <li>{$all_information.car_num}</li>
+                <li>{$all_information.engine_number}</li>
+                <li>
+                {if $all_information.has_num eq '1'}是{else}否{/if}
+                </li>
+                <li>{$all_information.car_brand}</li>
+            </div>
+            <div class="ul02-part">
+				<li>身份证号：</li>
+				<li>注册登记日期：</li>
+				<li>车主生日：</li>
+				<li>上一年是否发生所有权转移：</li>
+				<li>手机号码：</li>
+				<!--<li>验 证 码：{$all_information.recognizee_phone_check}</li>-->
+			</div>
+            <div class="ul02-part">
+                <li>{$all_information.recognizee_cardnum}</li>
+                <li>{$all_information.record_date}</li>
+                <li>{$all_information.recognizee_brithday}</li>
+                <li>
+                {if $all_information.is_transfer eq '1'}是{else}否{/if}
+                </li>
+                <li>{$all_information.recognizee_phone}</li>
+            </div>
+        </ul>
+
+        <div class="payment">
+            <a href="javascript:toCarPay();" >确认提交订单</a>
+         </div>
+    </div>
+
+  <!-- {/if} -->
+
+  <!-- 车险确认页面结束-->
+
+  <!-- 开始支付界面-->
+  <!-- {if $step eq "pay_policy"}-->
+
+   <!-- {foreach from=$payment_list item=payment} -->
+       <!-- 循环支付方式 -->
+       {if $payment.pay_code!='yunqi'}
+            <!--<tr>
+              <td valign="top" bgcolor="#ffffff"><input type="radio" name="payment" value="{$payment.pay_id}" checked isCod="{$payment.is_cod}"  {if $cod_disabled and $payment.is_cod eq "1"}disabled="true"{/if} /></td>
+              <td valign="top" bgcolor="#ffffff"><strong>{$payment.pay_name}</strong></td>
+              <td valign="top" bgcolor="#ffffff">{$payment.pay_desc}</td>
+              <td align="right" bgcolor="#ffffff" valign="top">{$user_money}</td>
+            </tr>-->
+<!--
+            <div class="paybox-main">
+              <div class="title-box clearfix">
+                <div class="pull-left">
+                  <h2>产品名称:<span>{$good.goods_name}</span></h2>
+                </div>
+                <div class="pull-right">
+                  <span>支付金额（元）:<em>{$policy_money}</em></span>
+                </div>
+              </div>
+              <ul class="tabbox">
+                <li class="on">账户余额</li>
+                <li title="暂不可用" style="cursor: not-allowed;">支付宝/微信</li>
+                <li title="暂不可用" style="cursor: not-allowed;">银行卡</li>
+              </ul>
+              <div class="conbox">
+                <strong>账户可用余额：</strong><em style="color:#94b63d;">{$user_money}</em>
+                <span>{$payment.pay_desc}</span>
+              </div>
+              <div class="paybtn">
+                <a href="javascript:toActDone()" class="btn">立即支付</a>
+              </div>
+            </div>
+-->
+        <link rel="stylesheet" href="/html/css/pay.css">
+        <div class="block healthy-box" >
+         <span>付款</span>
+            <div class="pay-box">
+                <div class="title-box clearfix">
+                     <div class="pull-left">
+                          <h2><span>{$good.goods_name}</span></h2>
+                     </div>
+                     <div class="pull-right">
+                          <h4>需支付金额:  <span>{$policy_money}</span>  元</h4>
+                     </div>
+                 </div>
+                <p>请选择支付方式</p>
+                <div class="pay-container" id="pay-container">
+                    <li id="balance-pic" class="current"></li>
+                    <li id="alipay-pic"></li>
+                </div>
+                <div class="pay-container">
+                <p class="money">账户余额: <span>{$user_money}</span></p>
+                <p class="desc">账户余额支付,需会员才能使用。</p>
+                <div class="select-box">
+                    <button onclick="window.history.go(-1)" class="bt">上一步</button>
+                    <button onclick="toActDone()" class="bt">确认支付</button>
+                </div>
+                </div>
+         </div>
+        </div>
+
+        {/if}
+        <!-- {/foreach} 循环支付方式 -->
+  <!-- {/if} -->
+  <!-- 结束支付界面-->
+
+        <!-- {if $step eq "consignee"} -->
+        <!-- 开始收货人信息填写界面 -->
+        {insert_scripts files='region.js,utils.js'}
+        <script type="text/javascript">
+          region.isAdmin = false;
+          {foreach from=$lang.flow_js item=item key=key}
+          var {$key} = "{$item}";
+          {/foreach}
+
+          {literal}
+          onload = function() {
+            if (!document.all)
+            {
+              document.forms['theForm'].reset();
+            }
+          }
+          {/literal}
+        </script>
+        <!-- 如果有收货地址，循环显示用户的收获地址 -->
+        <!-- {foreach from=$consignee_list item=consignee key=sn} -->
+        <form action="flow.php" method="post" name="theForm" id="theForm" onsubmit="return checkConsignee(this)">
+        <!-- #BeginLibraryItem "/Library/consignee.lbi" --><!-- #EndLibraryItem -->
+        </form>
+        <!-- {/foreach} -->
+        <!-- {/if} -->
+
+        <!-- {if $step eq "checkout"} 开始订单确认界面 -->
+        <form action="flow.php" method="post" name="theForm" id="theForm" onsubmit="return checkOrderForm(this)">
+        <script type="text/javascript">
+        var flow_no_payment = "{$lang.flow_no_payment}";
+        var flow_no_shipping = "{$lang.flow_no_shipping}";
+        </script>
+        <div class="flowBox">
+        <h6><span>{$lang.goods_list}</span><!--{if $allow_edit_cart} --><a href="flow.php" class="f6">{$lang.modify}</a><!--{/if} --></h6>
+        <table width="99%" align="center" border="0" cellpadding="5" cellspacing="1" bgcolor="#dddddd">
+            <tr>
+              <th bgcolor="#ffffff">{$lang.goods_name}</th>
+              <th bgcolor="#ffffff">{$lang.goods_attr}</th>
+              <!-- {if $show_marketprice} -->
+              <th bgcolor="#ffffff">{$lang.market_prices}</th>
+              <!-- {/if} -->
+              <th bgcolor="#ffffff">{if $gb_deposit}{$lang.deposit}{else}{$lang.shop_prices}{/if}</th>
+              <th bgcolor="#ffffff">{$lang.number}</th>
+              <th bgcolor="#ffffff">{$lang.subtotal}</th>
+            </tr>
+            <!-- {foreach from=$goods_list item=goods} -->
+            <tr>
+              <td bgcolor="#ffffff">
+              <!-- {if $goods.goods_id gt 0 && $goods.extension_code eq 'package_buy'} -->
+          <a href="javascript:void(0)" onclick="setSuitShow({$goods.goods_id})" class="f6">{$goods.goods_name}<span style="color:#FF0000;">（{$lang.remark_package}）</span></a>
+          <div id="suit_{$goods.goods_id}" style="display:none">
+              <!-- {foreach from=$goods.package_goods_list item=package_goods_list} -->
+            <a href="goods.php?id={$package_goods_list.goods_id}" target="_blank" class="f6">{$package_goods_list.goods_name}</a><br />
+              <!-- {/foreach} -->
+          </div>
+          <!-- { else } -->
+          <a href="goods.php?id={$goods.goods_id}" target="_blank" class="f6">{$goods.goods_name}</a>
+                <!-- {if $goods.parent_id > 0} -->
+                <span style="color:#FF0000">（{$lang.accessories}）</span>
+                <!-- {elseif $goods.is_gift} -->
+                <span style="color:#FF0000">（{$lang.largess}）</span>
+                <!-- {/if} -->
+          <!-- {/if} -->
+          <!-- {if $goods.is_shipping} -->(<span style="color:#FF0000">{$lang.free_goods}</span>)<!-- {/if} -->
+              </td>
+              <td bgcolor="#ffffff">{$goods.goods_attr|nl2br}</td>
+              <!-- {if $show_marketprice} -->
+              <td align="right" bgcolor="#ffffff">{$goods.formated_market_price}</td>
+              <!-- {/if} -->
+              <td bgcolor="#ffffff" align="right">{$goods.formated_goods_price}</td>
+              <td bgcolor="#ffffff" align="right">{$goods.goods_number}</td>
+              <td bgcolor="#ffffff" align="right">{$goods.formated_subtotal}</td>
+            </tr>
+            <!-- {/foreach} -->
+            <!-- {if !$gb_deposit} 团购且有保证金时不显示 -->
+            <tr>
+              <td bgcolor="#ffffff" colspan="7">
+              <!-- {if $discount gt 0} -->{$your_discount}<br /><!-- {/if} -->
+              {$shopping_money}<!-- {if $show_marketprice} -->，{$market_price_desc}<!--{/if}-->
+              </td>
+            </tr>
+            <!-- {/if} -->
+          </table>
+      </div>
+
+    <!--{if $is_exchange_goods neq 1 || $total.real_goods_count neq 0}-->
+    <div class="flowBox">
+    <h6><span>{$lang.payment_method}</span></h6>
+    <table width="99%" align="center" border="0" cellpadding="5" cellspacing="1" bgcolor="#dddddd" id="paymentTable">
+            <tr>
+              <th width="5%" bgcolor="#ffffff">&nbsp;</th>
+              <th width="20%" bgcolor="#ffffff">{$lang.name}</th>
+              <th bgcolor="#ffffff">{$lang.describe}</th>
+              <th bgcolor="#ffffff" width="15%">{$lang.pay_fee}</th>
+            </tr>
+            <!-- {foreach from=$payment_list item=payment} -->
+            <!-- 循环支付方式 -->
+            {if $payment.pay_code!='yunqi'}
+            <tr>
+              <td valign="top" bgcolor="#ffffff"><input type="radio" name="payment" value="{$payment.pay_id}" {if $order.pay_id eq $payment.pay_id}checked{/if} isCod="{$payment.is_cod}" onclick="selectPayment(this)" {if $cod_disabled and $payment.is_cod eq "1"}disabled="true"{/if}/></td>
+              <td valign="top" bgcolor="#ffffff"><strong>{$payment.pay_name}</strong></td>
+              <td valign="top" bgcolor="#ffffff">{$payment.pay_desc}</td>
+              <td align="right" bgcolor="#ffffff" valign="top">{$payment.format_pay_fee}</td>
+            </tr>
+            {else}
+            <tr>
+              <td rowspan=2 valign="middle" bgcolor="#ffffff">
+                <input type="radio" id="yunqi_payment" name="payment" value="{$payment.pay_id}" {if $order.pay_id eq $payment.pay_id}checked{/if} isCod="{$payment.is_cod}" onclick="selectPayment(this)" {if $cod_disabled and $payment.is_cod eq "1"}disabled="true"{/if}/></td>
+              <td class="list-tit" valign="top" bgcolor="#ffffff">
+                <strong>{$payment.pay_name} <i style="display:inline-block;width: 70px ;text-align: center" id="payMethod">（支付宝）</i></strong>
+
+              </td>
+              <td valign="top" bgcolor="#ffffff">{$payment.pay_desc}</td>
+              <td align="right" bgcolor="#ffffff" valign="top">{$payment.format_pay_fee}</td>
+            </tr>
+            <tr>
+              <td align="left" bgcolor="#ffffff" valign="top" colspan=3>
+
+                  <span class="item">
+                    <input type="radio" id="alipay" name="yunqi_paymethod" value="alipay" checked onclick="checkIpt(this);">
+                    <label for="paybal" class="alipay-image"></label>
+                  </span>
+                  <span class="item">
+                    <input type="radio" id="wxpay" name="yunqi_paymethod" value="wxpay" onclick="checkIpt(this);">
+                    <label for="wechat" class="wechat-image"></label>
+                  </span>
+              </td>
+            </tr>
+            {/if}
+            <!-- {/foreach} 循环支付方式 -->
+          </table>
+    </div>
+    <!--{else}-->
+        <input name = "payment" type="radio" value = "-1" checked="checked"  style="display:none"/>
+    <!--{/if}-->
+    <div class="flowBox">
+    <h6><span>{$lang.fee_total}</span></h6>
+           <table>
+           <tr>
+	    		<td align="right" bgcolor="#ffffff"> 费用总计: <font class="f4_b">{$fee_money}</font></td>
+		   </tr>
+           </table>
+           <div align="center" style="margin:8px auto;">
+            <input type="image" src="images/bnt_subOrder.gif" />
+            <input type="hidden" name="step" value="done" />
+            </div>
+    </div>
+    </form>
+        <!-- {/if} -->
+
+        <!-- {if $step eq "done"} -->
+        <!-- 订单提交成功 -->
+        <div class="flowBox" style="margin:30px auto 70px auto;">
+         <h6 style="text-align:center; height:30px; line-height:30px;">{$lang.remember_order_number}: <font style="color:red">{$order.order_sn}</font></h6>
+          <table width="99%" align="center" border="0" cellpadding="15" cellspacing="0" bgcolor="#fff" style="border:1px solid #ddd; margin:20px auto;" >
+            <tr>
+              <td align="center" bgcolor="#FFFFFF">
+              <!--{if $order.shipping_name}-->{$lang.select_shipping}: <strong>{$order.shipping_name}</strong>，<!--{/if}-->{$lang.select_payment}: <strong>{$order.pay_name}</strong>。{$lang.order_amount}: <strong>{$total.amount_formated}</strong>
+              </td>
+            </tr>
+            <tr>
+              <td align="center" bgcolor="#FFFFFF">{$order.pay_desc}</td>
+            </tr>
+            <!-- {if $pay_online} -->
+            <!-- 如果是线上支付则显示支付按钮 -->
+            <tr>
+              <td align="center" bgcolor="#FFFFFF">{$pay_online}</td>
+            </tr>
+            <!-- {/if} -->
+          </table>
+          <!--{if $virtual_card}-->
+          <div style="text-align:center;overflow:hidden;border:1px solid #E2C822;background:#FFF9D7;margin:10px;padding:10px 50px 30px;">
+          <!--{foreach from=$virtual_card item=vgoods}-->
+            <h3 style="color:#2359B1; font-size:12px;">{$vgoods.goods_name}</h3>
+            <!--{foreach from=$vgoods.info item=card}-->
+              <ul style="list-style:none;padding:0;margin:0;clear:both">
+              <!--{if $card.card_sn}-->
+              <li style="margin-right:50px;float:left;">
+              <strong>{$lang.card_sn}:</strong><span style="color:red;">{$card.card_sn}</span>
+              </li><!--{/if}-->
+              <!--{if $card.card_password}-->
+              <li style="margin-right:50px;float:left;">
+              <strong>{$lang.card_password}:</strong><span style="color:red;">{$card.card_password}</span>
+              </li><!--{/if}-->
+              <!--{if $card.end_date}-->
+              <li style="float:left;">
+              <strong>{$lang.end_date}:</strong>{$card.end_date}
+              </li><!--{/if}-->
+              </ul>
+            <!--{/foreach}-->
+          <!--{/foreach}-->
+          </div>
+          <!--{/if}-->
+          <p style="text-align:center; margin-bottom:20px;">{$order_submit_back}</p>
+        </div>
+        <!-- {/if} -->
+        <!-- {if $step eq "login"} -->
+        {insert_scripts files='utils.js,user.js'}
+        <script type="text/javascript">
+        {foreach from=$lang.flow_login_register item=item key=key}
+          var {$key} = "{$item}";
+        {/foreach}
+
+        {literal}
+        function checkLoginForm(frm) {
+          if (Utils.isEmpty(frm.elements['username'].value)) {
+            alert(username_not_null);
+            return false;
+          }
+
+          if (Utils.isEmpty(frm.elements['password'].value)) {
+            alert(password_not_null);
+            return false;
+          }
+
+          return true;
+        }
+
+        function checkSignupForm(frm) {
+          if (Utils.isEmpty(frm.elements['username'].value)) {
+            alert(username_not_null);
+            return false;
+          }
+
+          if (Utils.trim(frm.elements['username'].value).match(/^\s*$|^c:\\con\\con$|[%,\'\*\"\s\t\<\>\&\\]/))
+          {
+            alert(username_invalid);
+            return false;
+          }
+
+          if (Utils.isEmpty(frm.elements['email'].value)) {
+            alert(email_not_null);
+            return false;
+          }
+
+          if (!Utils.isEmail(frm.elements['email'].value)) {
+            alert(email_invalid);
+            return false;
+          }
+
+          if (Utils.isEmpty(frm.elements['password'].value)) {
+            alert(password_not_null);
+            return false;
+          }
+
+          if (frm.elements['password'].value.length < 6) {
+            alert(password_lt_six);
+            return false;
+          }
+
+          if (frm.elements['password'].value != frm.elements['confirm_password'].value) {
+            alert(password_not_same);
+            return false;
+          }
+          return true;
+        }
+        {/literal}
+        </script>
+        <!-- 开始用户登录注册界面 -->
+        <div class="flowBox">
+        <table width="99%" align="center" border="0" cellpadding="5" cellspacing="1" bgcolor="#dddddd">
+          <tr>
+            <td width="50%" valign="top" bgcolor="#ffffff">
+            <h6><span>用户登录：</span></h6>
+            <form action="flow.php?step=login" method="post" name="loginForm" id="loginForm" onsubmit="return checkLoginForm(this)">
+                <table width="90%" border="0" cellpadding="8" cellspacing="1" bgcolor="#eeeeee" class="table">
+                  <tr>
+                    <td bgcolor="#ffffff"><div align="right"><strong>{$lang.username}</strong></div></td>
+                    <td bgcolor="#ffffff"><input name="username" type="text" class="inputBg" id="username" /></td>
+                  </tr>
+                  <tr>
+                    <td bgcolor="#ffffff"><div align="right"><strong>{$lang.password}</strong></div></td>
+                    <td bgcolor="#ffffff"><input name="password" class="inputBg" type="password" /></td>
+                  </tr>
+                  <!-- 判断是否启用验证码{if $enabled_login_captcha} -->
+                  <tr>
+                    <td bgcolor="#ffffff"><div align="right"><strong>{$lang.comment_captcha}:</strong></div></td>
+                    <td bgcolor="#ffffff"><input type="text" size="8" name="captcha" class="inputBg" />
+                    <img src="captcha.php?is_login=1&{$rand}" alt="captcha" style="vertical-align: middle;cursor: pointer;" onClick="this.src='captcha.php?is_login=1&'+Math.random()" /> </td>
+                  </tr>
+                  <!--{/if}-->
+                  <tr>
+            <td colspan="2"  bgcolor="#ffffff"><input type="checkbox" value="1" name="remember" id="remember" /><label for="remember">{$lang.remember}</label></td>
+          </tr>
+                  <tr>
+                    <td bgcolor="#ffffff" colspan="2" align="center"><a href="user.php?act=qpassword_name" class="f6">{$lang.get_password_by_question}</a>&nbsp;&nbsp;&nbsp;<a href="user.php?act=get_password" class="f6">{$lang.get_password_by_mail}</a></td>
+                  </tr>
+                  <tr>
+                    <td bgcolor="#ffffff" colspan="2"><div align="center">
+                        <input type="submit" class="bnt_blue" name="login" value="{$lang.forthwith_login}" />
+                        <!-- {if $anonymous_buy eq 1} 是否允许未登录用户购物 -->
+                        <input type="button" class="bnt_blue_2" value="{$lang.direct_shopping}" onclick="location.href='flow.php?step=consignee&amp;direct_shopping=1'" />
+                        <!-- {/if} -->
+                        <input name="act" type="hidden" value="signin" />
+                      </div></td>
+                  </tr>
+                </table>
+              </form>
+
+              </td>
+            <td valign="top" bgcolor="#ffffff">
+            <h6><span>用户注册：</span></h6>
+            <form action="flow.php?step=login" method="post" name="formUser" id="registerForm" onsubmit="return checkSignupForm(this)">
+               <table width="98%" border="0" cellpadding="8" cellspacing="1" bgcolor="#eeeeee" class="table">
+                  <tr>
+                    <td bgcolor="#ffffff" align="right" width="25%"><strong>{$lang.username}</strong></td>
+                    <td bgcolor="#ffffff"><input name="username" type="text" class="inputBg" id="username" onblur="is_registered(this.value);" /><br />
+            <span id="username_notice" style="color:#FF0000"></span></td>
+                  </tr>
+                  <tr>
+                    <td bgcolor="#ffffff" align="right"><strong>{$lang.email_address}</strong></td>
+                    <td bgcolor="#ffffff"><input name="email" type="text" class="inputBg" id="email" onblur="checkEmail(this.value);" /><br />
+            <span id="email_notice" style="color:#FF0000"></span></td>
+                  </tr>
+                  <tr>
+                    <td bgcolor="#ffffff" align="right"><strong>{$lang.password}</strong></td>
+                    <td bgcolor="#ffffff"><input name="password" class="inputBg" type="password" id="password1" onblur="check_password(this.value);" onkeyup="checkIntensity(this.value)" /><br />
+            <span style="color:#FF0000" id="password_notice"></span></td>
+                  </tr>
+                  <tr>
+                    <td bgcolor="#ffffff" align="right"><strong>{$lang.confirm_password}</strong></td>
+                    <td bgcolor="#ffffff"><input name="confirm_password" class="inputBg" type="password" id="confirm_password" onblur="check_conform_password(this.value);" /><br />
+            <span style="color:#FF0000" id="conform_password_notice"></span></td>
+                  </tr>
+                  <!-- 判断是否启用验证码{if $enabled_register_captcha} -->
+                  <tr>
+                    <td bgcolor="#ffffff" align="right"><strong>{$lang.comment_captcha}:</strong></td>
+                    <td bgcolor="#ffffff"><input type="text" size="8" name="captcha" class="inputBg" />
+                    <img src="captcha.php?{$rand}" alt="captcha" style="vertical-align: middle;cursor: pointer;" onClick="this.src='captcha.php?'+Math.random()" /> </td>
+                  </tr>
+                  <!--{/if}-->
+                  <tr>
+                    <td colspan="2" bgcolor="#ffffff" align="center">
+                        <input type="submit" name="Submit" class="bnt_blue_1" value="{$lang.forthwith_register}" />
+                        <input name="act" type="hidden" value="signup" />
+                    </td>
+                  </tr>
+                </table>
+              </form>
+              </td>
+          </tr>
+          {if $need_rechoose_gift}
+          <tr>
+            <td colspan="2" align="center" style="border-top:1px #ccc solid; padding:5px; color:red;">{$lang.gift_remainder}</td>
+          </tr>
+          {/if}
+        </table>
+        </div>
+        <!-- 结束用户登录注册界面 -->
+        <!-- {/if} -->
+
+</div>
+<div class="blank5"></div>
+<!--友情链接 start-->
+<!--{if $img_links  or $txt_links }-->
+<div id="bottomNav" class="box">
+ <div class="box_1">
+  <div class="links clearfix">
+    <!--开始图片类型的友情链接{foreach from=$img_links item=link}-->
+    <a href="{$link.url}" target="_blank" title="{$link.name}"><img src="{$link.logo}" alt="{$link.name}" border="0" /></a>
+    <!--结束图片类型的友情链接{/foreach}-->
+    <!-- {if $txt_links} -->
+    <!--开始文字类型的友情链接{foreach from=$txt_links item=link}-->
+    [<a href="{$link.url}" target="_blank" title="{$link.name}">{$link.name}</a>]
+    <!--结束文字类型的友情链接{/foreach}-->
+    <!-- {/if} -->
+  </div>
+ </div>
+</div>
+<!--{/if}-->
+<!--友情链接 end-->
+<div class="blank"></div>
+<!-- #BeginLibraryItem "/library/page_footer.lbi" --><!-- #EndLibraryItem -->
+
+<!--  遮罩层  -->
+<div class="msgTips-container"></div>
+<div id="msgTips" class="dialog-box detele-order">
+    <div class="t">
+        <span class="title">登录网上银行支付</span>
+        <b title="关闭" class="close" onclick="closeMsg();">x</b>
+    </div>
+    <div class="c">
+        <p>请您在打开的网上银行页面进行支付，</p>
+        <p>完成前请不要关闭该窗口</p>
+        <div id="msgBtn">
+            <a id="conformBtn" class="tijiao" href="javascript:goOrder();" data-id="">已完成支付</a>
+            <a id="formBtn" class="tijiao" href="javascript:closeMsg();" data-id="">重新选择支付方式</a>
+        </div>
+    </div>
+</div>
+
+</body>
+<script type="text/javascript">
+var process_request = "{$lang.process_request}";
+{foreach from=$lang.passport_js item=item key=key}
+var {$key} = "{$item}";
+{/foreach}
+var username_exist = "{$lang.username_exist}";
+var compare_no_goods = "{$lang.compare_no_goods}";
+var btn_buy = "{$lang.btn_buy}";
+var is_cancel = "{$lang.is_cancel}";
+var select_spe = "{$lang.select_spe}";
+
+function checkIpt(item){
+  var val = item.value;
+  var method = document.getElementById('payMethod');
+  if(val == 'wxpay'){
+    method.innerHTML = '微&nbsp;&nbsp;&nbsp;信';
+  }else{
+    method.innerHTML = '支付宝';
+  }
+  document.getElementById('yunqi_payment').click();
+}
+
+$(function(){
+  if($(".user-list ul li").length>0){
+    $(".user-list ul li").click(function(){
+      $(this).addClass("active").siblings().removeClass("active");
+      if($(this).hasClass("insured")){
+        $("#recognizee_name").val($(this).attr("data-username"));//姓名
+        $("#recognizee_cardtype").val($(this).attr("data-card-type"));//证件类型
+        $("#recognizee_cardnum").val($(this).attr("data-card-num"));//证件号码
+        $("#recognizee_birth").val($(this).attr("data-birth-date"));//出生日期
+        //$("input[name='recognizee_sex']").eq($(this).attr("data-sex")).prop("checked", true);//性别
+        $("#recognizee_sex").val($(this).attr("data-sex"));
+        $("#recognizee_phone").val($(this).attr("data-tel"));//手机号码
+      }else if($(this).hasClass("holder")){
+        $("#policy_name").val($(this).attr("data-username"));
+        $("#policy_cardtype").val($(this).attr("data-card-type"));
+        $("#policy_cardnum").val($(this).attr("data-card-num"));
+        $("#policy_birth").val($(this).attr("data-birth-date"));
+        //$("input[name='policy_sex']").eq($(this).attr("data-sex")).prop("checked", true);
+        $("#policy_sex").val($(this).attr("data-sex"));
+        $("#policy_phone").val($(this).attr("data-tel"));
+      }else{}
+    })
+  }
+})
+</script>
+<script languaget=javascript>
+	function getvalue(){
+		var value=""
+		var get=document.getElementsByName("policy_sex");
+		for(i=0;i<get.length;i++){
+		if(get[i].checked){
+		value=get[i].value;
+		}
+		}
+		return value;
+	}
+
+	function getvalue_policy(){
+		/*0622获取性别方法
+		var value=""
+		var get=document.getElementsByName("recognizee_sex");
+		for(i=0;i<get.length;i++){
+		    if(get[i].checked){
+		        value=get[i].value;
+		    }
+		}
+		return value;
+		*/
+		return $("#recognizee_sex").val();
+	}
+</script>
+<script type="text/javascript">
+	//添加表单的提示信息 @wuwp 20170529
+    $("#recognizee_name").focus(function(){
+      $('#recognizee_name_tip').show();
+    });
+    $("#recognizee_name").blur(function(){
+        $('#recognizee_name_tip').hide();
+    });
+    $("#recognizee_cardnum").focus(function(){
+      $('#recognizee_cardnum_tip').show();
+    });
+    $("#recognizee_cardnum").blur(function(){
+        $('#recognizee_cardnum_tip').hide();
+    });
+   $("#recognizee_birth").focus(function(){
+      $('#recognizee_birth_tip').show();
+    });
+    $("#recognizee_birth").blur(function(){
+        $('#recognizee_birth_tip').hide();
+    });
+   $("#recognizee_phone").focus(function(){
+      $('#recognizee_phone_tip').show();
+    });
+    $("#recognizee_phone").blur(function(){
+        $('#recognizee_phone_tip').hide();
+    });
+    $("input[name='has_num']").click(function(){
+      if($(this).is(":checked")){
+        $("#car_num").prop("disabled", true);
+        $("#car_num").val('');
+      }else{
+        $("#car_num").prop("disabled", false);
+      }
+    });
+</script>
+<script>
+$('#pay-container li').on('click',function(){
+   $(this).addClass("current").siblings().removeClass("current");
+});
+</script>
+<script>
+function onCardNumChange(birthId){
+    var cardNum = $('#'+birthId+'_cardnum').val();
+    var carBirth = cardNum.substr(6,4)+'-'+cardNum.substr(10,2)+'-'+cardNum.substr(12,2);
+    $('#'+birthId+'_birth').val(carBirth);
+}
+</script>
+</html>

@@ -1,0 +1,263 @@
+<div class="app-container with-navbar with-tabbar" ng-controller="ConfirmCarproductController">
+
+    <div class="navbar fixed-top">
+        <div class="navbar-left hide-weixin" ng-click="goBack()">
+            <img class="button-icon" src="image-current/nav-left.png"/>
+            <!--<div class="button-text">返回</div>-->
+        </div>
+        <div class="navbar-title">
+            填写车险保单
+        </div>
+        <div class="navbar-right">
+        </div>
+    </div>
+
+
+    <!--  填写受保车辆信息  -->
+    <div class="address-form" >
+        <div class="form-item" >
+            <div class="item-title">
+                行驶城市
+            </div>
+            <div class="item-input">
+                <input type="text" placeholder="填写行驶城市" ng-model="drive_city"/>
+            </div>
+        </div>
+        <div class="form-item" ng-hide="is_new">
+            <div class="item-title">
+                车牌号
+            </div>
+            <div class="item-input">
+                <input type="text" placeholder="填写车牌号" ng-model="car_num"/>
+            </div>
+        </div>
+        <div class="form-item" ng-click="touchIsNewPickerShow()">
+            <div class="item-title">
+                新车未上险
+            </div>
+            <div class="item-select" ng-if="is_new == null">
+                是、否
+            </div>
+            <div class="item-value" ng-if="is_new != null">
+                {{formatIsNew(is_new)}}
+            </div>
+            <img class="item-arrow" src="image/nav-right.png"/>
+        </div>
+        <div class="form-item">
+            <div class="item-title">
+                身份证号
+            </div>
+            <div class="item-input">
+                <input type="text" placeholder="填写身份证号" ng-model="card_num"/>
+            </div>
+        </div>
+        <div class="form-item">
+            <div class="item-title">
+                车主生日
+            </div>
+            <div class="item-select" ng-if="!card_num">
+            </div>
+            <div class="item-value" ng-if="card_num">
+                {{card_num | limitTo: 4: 6}}-{{card_num |  limitTo: 2: 10}}-{{card_num |  limitTo: 2: 12}}
+            </div>
+        </div>
+
+        <div class="form-item">
+            <div class="item-title">
+                手机号码
+            </div>
+            <div class="item-input">
+                <input type="text" placeholder="填写手机号码" ng-model="mobile" />
+            </div>
+        </div>
+        <!--
+        <div class="form-item">
+            <div class="item-title">
+                验证码
+            </div>
+            <div class="item-input">
+                <input type="text" placeholder="填写验证码" ng-model="input.score"/>
+            </div>
+        </div>
+        -->
+        <div class="form-item">
+            <div class="item-title">
+                车架号
+            </div>
+            <div class="item-input">
+                <input type="text" placeholder="填写车架号" ng-model="frame_number"/>
+            </div>
+        </div>
+        <div class="form-item">
+            <div class="item-title">
+                发动机号
+            </div>
+            <div class="item-input">
+                <input type="text" placeholder="填写发动机号" ng-model="engine_number"/>
+            </div>
+        </div>
+        <div class="form-item">
+            <div class="item-title">
+                品牌型号
+            </div>
+            <div class="item-input">
+                <input type="text" placeholder="填写品牌型号" ng-model="car_brand"/>
+            </div>
+        </div>
+        <div class="form-item">
+            <div class="item-title">
+                注册登记日期
+            </div>
+            <div class="item-input">
+                <input type="text" placeholder="填写注册登记日期-格式2017-01-01" ng-model="record_date"/>
+            </div>
+        </div>
+        <div class="form-item" ng-click="touchIsTransferPickerShow()">
+            <div class="item-title-long">
+                上一年是否发生所有权转移
+            </div>
+            <div class="item-select-long" ng-if="is_transfer == null">
+                是、否
+            </div>
+            <div class="item-value-long" ng-if="is_transfer != null">
+                {{formatIsTransfer(is_transfer)}}
+            </div>
+            <img class="item-arrow" src="image/nav-right.png"/>
+        </div>
+    </div>
+
+    <!-- Goods -->
+    <div class="order-title">订单信息</div>
+    <div class="confirm-goods" ng-if = "selectedGoods.length > 0">
+        <div class="goods-item"
+             ng-repeat="card_good in selectedGoods track by $index"
+             ng-click="touchProduct(card_good)">
+            <div class="item-photo">
+                <img ng-src="image/default-photo.png" lazy-img="{{card_good.product.photos[0].thumb}}"/>
+            </div>
+
+            <div class="item-info">
+                <div class="info-name">
+                    {{card_good.product.name}}
+                </div>
+                <div class="info-attr">
+                    {{card_good.property}}
+                </div>
+
+                <div class="info-price">
+                    ¥{{card_good.price|number:2}}
+                </div>
+                <!--<div class="info-amount">-->
+                    <!--x{{card_good.amount}}-->
+                <!--</div>-->
+            </div>
+
+            <div class="signup-hline"></div>
+
+            <div class="item-msg">
+                <div class="info-contact">
+                    保险期限
+                </div>
+                <div class="info-contact">
+                    受益人
+                </div>
+            </div>
+            <div class="item-rightMsg">
+                <div class="info-contact">
+                    {{firstTime}}   <span>至</span>
+                    <br>
+                    {{lastTime}}
+                </div>
+                <div class="info-contact">
+                    法定
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Form
+    <div class="confirm-form" ng-if="selectedGoods && selectedGoods.length">
+        <div class="form-item">
+            <div class="item-title">
+                使用积分
+            </div>
+            <div class="item-input">
+                <input type="text" placeholder="填写积分" ng-class="{active: scoreInfo.score > 0}" ng-disabled="!scoreInfo.score" ng-model="input.score" ng-change="refreshScore()"/>
+                <div class="input-tips" ng-if=" maxUseScore > 0">
+                    您当前可用 {{scoreInfo.score}} 积分，本订单最多可以使用{{maxUseScore}}积分，每积分抵扣 {{scoreInfo.rule}} 元
+                </div>
+                <div class="input-tips" ng-if="maxUseScore <= 0">
+                    无可用积分
+                </div>
+            </div>
+        </div>
+    </div>
+    -->
+
+    <!-- Total -->
+    <div class="confirm-summury">
+        <div class="summury-total">
+            保单总额 <span class="total-price"> ￥{{priceInfo.total_price || '0.00'}}</span>
+        </div>
+        <div class="summury-detail">
+            商品总额 <span class="total-price"> ￥{{priceInfo.product_price || '0.00'}}</span>
+        </div>
+        <!--<div class="summury-detail" ng-repeat="promo in priceInfo.promos track by $index">-->
+            <!--{{ formatPromo(promo.promo) }} <span class="total-price">- ￥{{promo.price}}</span>-->
+        <!--</div>-->
+    </div>
+
+    <!-- Submit -->
+    <div class="confirm-submit">
+        <div class="submit-total">
+            <div class="total-price">合计： ￥{{priceInfo.total_price || '0.00'}}</div>
+            <div class="total-discount">已优惠： ¥{{all_discount || '0.00'}}</div>
+        </div>
+        <div class="submit-button dark" ng-class="{active: canPurchase}" ng-click="touchSubmit()">
+            提交订单
+        </div>
+    </div>
+
+    <!-- 是否上险 Picker  @wuwp 20170609 -->
+    <div class="address-mask" ng-show="showIsNewPicker" ng-animate="{enter: 'mask-anim-enter', leave: 'mask-anim-leave'}" ng-click="touchIsNewPickerCancel()"></div>
+    <div class="address-picker" ng-show="showIsNewPicker" ng-animate="{enter: 'picker-anim-enter', leave: 'picker-anim-leave'}">
+        <div class="picker-header">
+            是否未上险
+        </div>
+        <div class="picker-list">
+            <div class="list-item" ng-click="touchPickerIsNew(1)">
+                是
+                <img class="item-arrow" src="image/nav-right.png"/>
+            </div>
+            <div class="list-item" ng-click="touchPickerIsNew(0)">
+                否
+                <img class="item-arrow" src="image/nav-right.png" />
+            </div>
+        </div>
+        <div class="picker-cancel" ng-click="touchIsNewPickerCancel()">
+            取消
+        </div>
+    </div>
+
+    <!-- 上一年是否所有权转移 Picker  @wuwp 20170609 -->
+    <div class="address-mask" ng-show="showIsTransferPicker" ng-animate="{enter: 'mask-anim-enter', leave: 'mask-anim-leave'}" ng-click="touchIsTransferPickerCancel()"></div>
+    <div class="address-picker" ng-show="showIsTransferPicker" ng-animate="{enter: 'picker-anim-enter', leave: 'picker-anim-leave'}">
+        <div class="picker-header">
+            是否发生所有权转移
+        </div>
+        <div class="picker-list">
+            <div class="list-item" ng-click="touchPickerIsTransfer(1)">
+                是
+                <img class="item-arrow" src="image/nav-right.png"/>
+            </div>
+            <div class="list-item" ng-click="touchPickerIsTransfer(0)">
+                否
+                <img class="item-arrow" src="image/nav-right.png" />
+            </div>
+        </div>
+        <div class="picker-cancel" ng-click="touchIsTransferPickerCancel()">
+            取消
+        </div>
+    </div>
+</div>
+

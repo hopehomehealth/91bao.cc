@@ -1,0 +1,236 @@
+<div class="app-container with-navbar with-tabbar" ng-controller="AddressEditController">
+
+    <div class="navbar fixed-top">
+        <div class="navbar-left hide-weixin" ng-click="goBack()">
+            <img class="button-icon" src="image-current/nav-left.png"/>
+        </div>
+        <div class="navbar-title">
+            常用联系人
+        </div>
+        <div class="navbar-right">
+        </div>
+    </div>
+
+    <!-- Form -->
+    <div class="address-form">
+      <div class="form-item">
+        <div class="item-title">
+          联系姓名
+        </div>
+        <div class="item-input">
+          <input type="text" placeholder="填写姓名" ng-model="name"/>
+        </div>
+      </div>
+      <div class="form-item">
+        <div class="item-title">
+          手机号码
+        </div>
+        <div class="item-input">
+          <input type="text" placeholder="填写手机号" ng-model="mobile"/>
+        </div>
+      </div>
+      <!--  添加 电子邮件地址 邮政编码 证件类型 证件号码 性别 出生日期 @wuwp 20170305 -->
+      <div class="form-item" ng-click="touchCardTypePickerShow()" >
+          <div class="item-title">
+              证件类型
+          </div>
+          <div class="item-select" ng-if="card_type == null">
+              身份证
+          </div>
+          <div class="item-value" ng-if="card_type != null">
+              {{formatCardType(card_type)}}
+          </div>
+          <img class="item-arrow" src="image/nav-right.png"/>
+      </div>
+        <div class="form-item">
+            <div class="item-title">
+                证件号码
+            </div>
+            <div class="item-input">
+                <input type="text" placeholder="填写证件号码" ng-model="card_num"/>
+            </div>
+        </div>
+        <div class="form-item">
+            <div class="item-title">
+                出生日期
+            </div>
+            <div class="item-select" ng-if="!card_num">
+            </div>
+            <div class="item-value" ng-if="card_num">
+                {{card_num | limitTo: 4: 6}}-{{card_num |  limitTo: 2: 10}}-{{card_num |  limitTo: 2: 12}}
+                <!--<input type="text" ng-model="birthday" value="" disabled/>-->
+            </div>
+        </div>
+        <div class="form-item" ><!-- touchSexPickerShow() -->
+            <div class="item-title">
+                性别
+            </div>
+            <!--
+            <div class="item-select" ng-if="sex == null">
+                女、男
+            </div>
+            <div class="item-value" ng-if="sex != null">
+                {{formatSex(sex)}}
+            </div>
+            <img class="item-arrow" src="image/nav-right.png"/>
+            -->
+            <!--<label class="radio-inline">-->
+                <!--<input name="display" type="radio" value="true" ng-model="sex" checked required><a>男</a>-->
+            <!--</label>-->
+            <!--<label class="radio-inline">-->
+                <!--<input name="display" type="radio" value="false" ng-model="sex"><a>女</a>-->
+            <!--</label>-->
+            <label class="radio-inline" ng-class="{active: sex=='1'}" ng-click="touchSexRadio(1)">
+                <div class="item-checkbox"></div>
+                <a>男</a>
+            </label>
+            <label class="radio-inline" ng-class="{active: sex=='0'}" ng-click="touchSexRadio(0)">
+                <div class="item-checkbox"></div>
+                <a>女</a>
+            </label>
+
+
+        </div>
+        <div class="form-item">
+            <div class="item-title">
+                电子邮箱
+            </div>
+            <div class="item-input">
+                <input type="text" placeholder="填写电子邮箱" ng-model="email"/>
+            </div>
+        </div>
+        <div class="form-item">
+            <div class="item-title">
+                邮政编码
+            </div>
+            <div class="item-input">
+                <input type="text" placeholder="填写邮政编码" ng-model="zip_code"/>
+            </div>
+        </div>
+        <!--  新增内容结束 END  -->
+      <div class="form-item" ng-click="touchPickerShow()">
+        <div class="item-title">
+          所在地区
+        </div>
+        <div class="item-select" ng-if="!regions">
+          请选择省、市、区
+        </div>
+        <div class="item-value" ng-if="regions">
+          {{formatRegions(regions)}}
+        </div>
+        <img class="item-arrow" src="image/nav-right.png"/>
+      </div>
+      <div class="form-item">
+        <div class="item-title">
+          详细地址
+        </div>
+        <div class="item-textarea">
+          <textarea type="text" placeholder="填写详细地址" ng-model="address"></textarea>
+        </div>
+      </div>
+      <!-- <div class="form-item" ng-class="{active: isDefault}" ng-click="touchSetDefault()">
+        <div class="item-title">
+          设置默认
+        </div>
+        <div class="item-checkbox"></div>
+      </div> -->
+    </div>
+
+    <!-- Picker -->
+    <div class="address-mask" ng-show="showPicker" ng-animate="{enter: 'mask-anim-enter', leave: 'mask-anim-leave'}" ng-click="touchPickerCancel()"></div>
+    <div class="address-picker" ng-show="showPicker" ng-animate="{enter: 'picker-anim-enter', leave: 'picker-anim-leave'}">
+      <div class="picker-header">
+        {{pickerRegionName || '请选择地区'}}
+      </div>
+      <div class="picker-list">
+        <div class="list-loading" ng-if="addressEditModel.isLoading">
+          正在加载...
+        </div>
+        <div class="list-item" ng-repeat="region in pickerData track by $index" ng-click="touchPickerRegion(region)" ng-if="pickerData && pickerData.length">
+          {{region.name}}
+          <img class="item-arrow" src="image/nav-right.png" ng-if="region.regions && region.regions.length"/>
+        </div>
+      </div>
+      <div class="picker-cancel" ng-click="touchPickerCancel()">
+        取消
+      </div>
+    </div>
+
+    <!--  新建Picker 选择性别 @wuwp 20170605 -->
+    <div class="address-mask" ng-show="showSexPicker" ng-animate="{enter: 'mask-anim-enter', leave: 'mask-anim-leave'}" ng-click="touchSexPickerCancel()"></div>
+    <div class="address-picker" ng-show="showSexPicker" ng-animate="{enter: 'picker-anim-enter', leave: 'picker-anim-leave'}">
+        <div class="picker-header">
+            {{pickerSexName || '请选择性别'}}
+        </div>
+        <div class="picker-list">
+            <div class="list-item" ng-click="touchPickerSex(0)">
+                女
+                <img class="item-arrow" src="image/nav-right.png" />
+            </div>
+            <div class="list-item" ng-click="touchPickerSex(1)">
+                男
+                <img class="item-arrow" src="image/nav-right.png"/>
+            </div>
+        </div>
+        <div class="picker-cancel" ng-click="touchSexPickerCancel()">
+            取消
+        </div>
+    </div>
+    <!--  新建Picker 选择证件类型 @wuwp 20170605 -->
+    <div class="address-mask" ng-show="showCardTypePicker" ng-animate="{enter: 'mask-anim-enter', leave: 'mask-anim-leave'}" ng-click="touchCardTypePickerCancel()"></div>
+    <div class="address-picker" ng-show="showCardTypePicker" ng-animate="{enter: 'picker-anim-enter', leave: 'picker-anim-leave'}">
+        <div class="picker-header">
+            {{pickerCardTypeName || '请选择证件类型'}}
+        </div>
+        <div class="picker-list">
+            <div class="list-item" ng-click="touchPickerCardType(1)">
+                身份证
+                <img class="item-arrow" src="image/nav-right.png" />
+            </div>
+        </div>
+        <div class="picker-cancel" ng-click="touchCardTypePickerCancel()">
+            取消
+        </div>
+    </div>
+
+    <!-- Submit -->
+    <div class="address-action">
+      <div class="bar-cancel" ng-click="touchCancel()">
+        取消
+      </div>
+        <div class="bar-save" ng-click="touchSave()">
+            保存
+        </div>
+    </div>
+
+    <!-- Submit -->
+    <div class="address-bar" ng-if="addressEditModel.consignee">
+        <div class="bar-delete" ng-click="touchDelete()">
+            删除联系人
+        </div>
+    </div>
+
+    <!-- Dialog -->
+    <div id="dialog" ng-show="showDialog">
+        <div class="mask">
+        </div>
+        <div class="dialog danger">
+            <div class="dialog-title">
+                确认删除
+            </div>
+            <div class="dialog-content">
+                是否删除该联系人
+            </div>
+            <div class="dialog-button">
+                <div class="button left" ng-click="touchDialogCancel()">
+                    取消
+                </div>
+                <div class="button right" ng-click="touchDialogConfirm()">
+                    确认
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+

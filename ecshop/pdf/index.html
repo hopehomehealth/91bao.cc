@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<style>
+		body{margin-top: 8rem;}
+		img{
+			width: 100%;
+		}
+		button{
+			position: fixed;
+			width: 50%;
+			height: 6rem;
+			border: none;
+			border-radius: 3px;
+			background-color: #e70012;
+			color: #ffffff;
+			font-size: 35px;
+			left: 0;
+			top: 0;
+		}
+	</style>
+</head>
+<body>
+	<button onclick="window.history.back();window.close();">关闭</button>
+</body>
+<Script language="javascript">
+    function GetRequest() {
+        var url = location.search; //获取url中"?"符后的字串
+        var theRequest = new Object();
+        if (url.indexOf("?") != -1) {
+            var str = url.substr(1);
+            var strs = str.split("&");
+            for(var i = 0; i < strs.length; i ++) {
+                theRequest[strs[i].split("=")[0]]=decodeURI(strs[i].split("=")[1]);
+            }
+        }
+        return theRequest;
+    }
+</Script>
+	<script>
+		var request = GetRequest();
+	    var img = new Image();
+	    var src = request.c.replace(/《|》|\s/g, '');
+        img.src   = src + '.jpg';
+//        img.src   = '1.jpg';
+        document.body.appendChild(img);
+
+	</script>
+</html>
